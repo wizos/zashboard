@@ -82,7 +82,7 @@ const zh: LANG_MESSAGE = {
   importSettings: '导入设置',
   unavailableProxy: '隐藏不可用节点',
   protocolTips:
-    '您正在尝试连接一个http后端但zashboard是通过https提供的，这可能会导致连接错误，请在浏览器设置中允许不安全的内容，设置在浏览器地址栏左侧。',
+    '您正在尝试连接一个http后端但zashboard是通过https提供的，这可能会导致连接错误，请在浏览器设置中允许不安全的内容，或者使用http版本面板例如http://board.zash.run.place',
   global: '全局',
   direct: '直连',
   lowLatencyDesc: '黄色的阈值',

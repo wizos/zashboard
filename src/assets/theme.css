@@ -20,6 +20,7 @@
   --border: 1px;
   --depth: 0;
   --noise: 0;
+  color-scheme: dark;
 }
 
 @plugin "daisyui/theme" {

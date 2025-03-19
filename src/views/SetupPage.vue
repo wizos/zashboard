@@ -9,11 +9,11 @@
     <div class="absolute right-4 bottom-4 max-sm:hidden">
       <LanguageSelect />
     </div>
-    <div class="card mx-auto w-96 max-w-[90%] gap-2 px-6 py-2 max-sm:my-4">
+    <div class="card mx-auto w-96 max-w-[90%] gap-3 px-6 py-2 max-sm:my-4">
       <h1 class="text-2xl font-semibold">{{ $t('setup') }}</h1>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">{{ $t('protocol') }}</span>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm">
+          <span>{{ $t('protocol') }}</span>
         </label>
         <select
           class="select select-sm w-full"
@@ -23,9 +23,9 @@
           <option value="https">HTTPS</option>
         </select>
       </div>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">{{ $t('host') }}</span>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm">
+          <span>{{ $t('host') }}</span>
         </label>
         <TextInput
           class="w-full"
@@ -34,18 +34,18 @@
           v-model="form.host"
         />
       </div>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">{{ $t('port') }}</span>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm">
+          <span>{{ $t('port') }}</span>
         </label>
         <TextInput
           class="w-full"
           v-model="form.port"
         />
       </div>
-      <div class="form-control">
-        <label class="label flex items-center justify-start gap-1">
-          <span class="label-text">{{ $t('secondaryPath') }} ({{ $t('optional') }})</span>
+      <div class="flex flex-col gap-1">
+        <label class="flex items-center gap-1 text-sm">
+          <span>{{ $t('secondaryPath') }} ({{ $t('optional') }})</span>
           <span
             class="tooltip"
             :data-tip="$t('secondaryPathTip')"
@@ -58,9 +58,9 @@
           v-model="form.secondaryPath"
         />
       </div>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">{{ $t('password') }}</span>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm">
+          <span>{{ $t('password') }}</span>
         </label>
         <input
           type="password"
@@ -68,9 +68,9 @@
           v-model="form.password"
         />
       </div>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">{{ $t('label') }} ({{ $t('optional') }})</span>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm">
+          <span>{{ $t('label') }} ({{ $t('optional') }})</span>
         </label>
         <TextInput
           class="w-full"
