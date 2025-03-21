@@ -32,7 +32,7 @@
     >
       <div class="flex h-20 shrink-0 flex-col gap-1 p-2">
         <ProxyIcon
-          v-if="proxyGroup.icon"
+          v-if="proxyGroup?.icon"
           :icon="proxyGroup.icon"
           size="small"
           class="absolute top-2 right-2 z-[-1] h-10 w-10!"

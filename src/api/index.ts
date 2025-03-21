@@ -265,6 +265,7 @@ export type GlobalIPType = {
   organization: string
   longitude: number
   city: string
+  region: string
   timezone: string
   isp: string
   offset: number
@@ -276,6 +277,7 @@ export type GlobalIPType = {
   postal_code: string
   continent_code: string
   country_code: string
+  region_code: string
 }
 
 export const getIPFromIpsbAPI = async (ip = '') => {

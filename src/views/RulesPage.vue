@@ -43,6 +43,8 @@ import RuleCard from '@/components/rules/RuleCard.vue'
 import RuleProvider from '@/components/rules/RuleProvider.vue'
 import { rulesTabShow } from '@/composables/rules'
 import { RULE_TAB_TYPE } from '@/constant'
-import { renderRules, renderRulesProvider, rules } from '@/store/rules'
+import { fetchRules, renderRules, renderRulesProvider, rules } from '@/store/rules'
 import type { Rule } from '@/types'
+
+fetchRules()
 </script>

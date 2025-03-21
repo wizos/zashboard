@@ -12,7 +12,7 @@
   >
     <div class="flex w-full flex-1 items-center gap-1">
       <ProxyIcon
-        v-if="node.icon"
+        v-if="node?.icon"
         class="shrink-0"
         size="small"
         :icon="node.icon"

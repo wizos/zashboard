@@ -29,6 +29,9 @@
               <template v-if="details?.city && details?.city !== details?.country">
                 {{ details?.city }},
               </template>
+              <template v-else-if="details?.region && details?.region !== details?.country">
+                {{ details?.region }},
+              </template>
               {{ details?.country }}
             </div>
             <div class="flex items-center gap-1">
