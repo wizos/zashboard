@@ -172,7 +172,9 @@ export default defineComponent({
                 key={mode}
                 value={mode}
               >
-                {t(mode.toLowerCase())}
+                {['global', 'rule', 'direct'].includes(mode.toLowerCase())
+                  ? t(mode.toLowerCase())
+                  : mode}
               </option>
             )
           })}
@@ -211,7 +213,12 @@ export default defineComponent({
 
       const toggleCollapseAll = (
         <button
-          class={['btn btn-circle btn-sm', twoColumnProxyGroup.value && 'max-sm:hidden']}
+          class={[
+            'btn btn-circle btn-sm',
+            twoColumnProxyGroup.value &&
+              proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES &&
+              'max-sm:hidden',
+          ]}
           onClick={handlerClickToggleCollapse}
         >
           {hasNotCollapsed.value ? (
