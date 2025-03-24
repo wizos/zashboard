@@ -74,10 +74,12 @@
         @nodeclick="handlerProxySelect($event)"
       />
     </template>
-    <template v-slot:content>
+    <template v-slot:content="{ showFullContent }">
       <ProxyNodeGrid>
         <ProxyNodeCard
-          v-for="node in renderProxies"
+          v-for="node in showFullContent
+            ? renderProxies
+            : renderProxies.slice(0, twoColumnProxyGroup ? 48 : 96)"
           :key="node"
           :name="node"
           :group-name="proxyGroup.name"
@@ -103,7 +105,7 @@ import {
   proxyMap,
   selectProxy,
 } from '@/store/proxies'
-import { manageHiddenGroup } from '@/store/settings'
+import { manageHiddenGroup, twoColumnProxyGroup } from '@/store/settings'
 import {
   ArrowRightCircleIcon,
   CheckCircleIcon,
