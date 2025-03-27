@@ -86,6 +86,7 @@ const newIconReflect = reactive({
 })
 
 const addIconReflect = () => {
+  if (!newIconReflect.name || !newIconReflect.icon) return
   dialogVisible.value = true
   iconReflectList.value.push({ ...newIconReflect, uuid: uuid() })
   newIconReflect.name = ''
