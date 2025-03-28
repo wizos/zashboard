@@ -13,7 +13,7 @@
       ref="themeColorRef"
     ></span>
     <button
-      class="btn btn-ghost btn-xs absolute right-1 bottom-0"
+      class="btn btn-circle btn-ghost btn-xs absolute right-1 bottom-0"
       @click="isPaused = !isPaused"
     >
       <component

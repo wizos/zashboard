@@ -105,9 +105,6 @@ export const fetchProxies = async () => {
     if (IPv6test.value && getIPv6FromExtra(proxy)) {
       IPv6Map.value[name] = true
     }
-    if (proxy.hidden && !(name in hiddenGroupMap.value)) {
-      hiddenGroupMap.value[name] = true
-    }
   })
 }
 
