@@ -18,6 +18,7 @@
       </form>
       <div
         :class="['max-h-[90dvh] overflow-y-auto max-md:max-h-[70dvh]', noPadding ? 'p-0' : 'p-4']"
+        v-if="isOpen"
       >
         <slot></slot>
       </div>

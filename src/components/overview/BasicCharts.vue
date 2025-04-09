@@ -1,9 +1,11 @@
 <template>
   <div class="relative h-28 w-full overflow-hidden">
-    <div
-      ref="chart"
-      class="h-full w-full"
-    ></div>
+    <div class="absolute top-0 left-0 size-full">
+      <div
+        ref="chart"
+        class="size-full"
+      ></div>
+    </div>
     <span
       class="border-base-content/10 bg-base-100/70 text-base-content hidden"
       ref="baseColorRef"
