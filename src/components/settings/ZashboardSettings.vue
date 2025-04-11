@@ -160,7 +160,7 @@
       </div>
       <div
         class="flex items-center gap-2"
-        v-if="!isSingBox"
+        v-if="!isSingBox || isReF1ndSingBox"
       >
         {{ $t('autoUpgrade') }}
         <input
@@ -170,7 +170,7 @@
         />
       </div>
       <div class="grid max-w-3xl grid-cols-2 gap-2 sm:grid-cols-4">
-        <template v-if="!isSingBox">
+        <template v-if="!isSingBox || isReF1ndSingBox">
           <button
             :class="twMerge('btn btn-primary btn-sm', isUIUpgrading ? 'animate-pulse' : '')"
             @click="handlerClickUpgradeUI"
@@ -193,7 +193,7 @@
 </template>
 
 <script setup lang="ts">
-import { isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
+import { isReF1ndSingBox, isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
 import { ALL_THEME, FONTS } from '@/constant'
