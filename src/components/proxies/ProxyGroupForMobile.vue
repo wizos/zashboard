@@ -103,6 +103,7 @@
 </template>
 
 <script setup lang="ts">
+import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { PROXY_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
@@ -220,4 +221,6 @@ const tipForFixed = (e: Event) => {
     delay: [500, 0],
   })
 }
+
+useBounceOnVisible()
 </script>

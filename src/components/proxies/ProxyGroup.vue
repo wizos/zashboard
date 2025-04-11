@@ -92,6 +92,7 @@
 </template>
 
 <script setup lang="ts">
+import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { PROXY_TYPE } from '@/constant'
 import { isHiddenGroup, prettyBytesHelper } from '@/helper'
@@ -187,4 +188,6 @@ const handlerProxySelect = async (name: string) => {
 
   selectProxy(props.name, name)
 }
+
+useBounceOnVisible()
 </script>
