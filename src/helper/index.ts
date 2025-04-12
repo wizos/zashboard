@@ -11,7 +11,6 @@ import { getLatencyByName, hiddenGroupMap, proxyMap } from '@/store/proxies'
 import {
   customThemes,
   hideUnavailableProxies,
-  language,
   lowLatency,
   mediumLatency,
   proxyChainDirection,
@@ -32,7 +31,7 @@ export const prettyBytesHelper = (bytes: number, opts?: Options) => {
 }
 
 export const fromNow = (timestamp: string) => {
-  return dayjs(timestamp).locale(language.value).fromNow()
+  return dayjs(timestamp).fromNow()
 }
 
 export const isProxyGroup = (name: string) => {
