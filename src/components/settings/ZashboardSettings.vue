@@ -157,10 +157,25 @@
             @mouseenter="showTip($event, $t('disablePullToRefreshTip'))"
           />
         </div>
+        <div
+          class="flex items-center gap-2"
+          v-if="isSingBox"
+        >
+          {{ $t('displayAllFeatures') }}
+          <input
+            type="checkbox"
+            v-model="displayAllFeatures"
+            class="toggle"
+          />
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('displayAllFeaturesTip'))"
+          />
+        </div>
       </div>
       <div
         class="flex items-center gap-2"
-        v-if="!isSingBox || isReF1ndSingBox"
+        v-if="!isSingBox || displayAllFeatures"
       >
         {{ $t('autoUpgrade') }}
         <input
@@ -170,7 +185,7 @@
         />
       </div>
       <div class="grid max-w-3xl grid-cols-2 gap-2 sm:grid-cols-4">
-        <template v-if="!isSingBox || isReF1ndSingBox">
+        <template v-if="!isSingBox || displayAllFeatures">
           <button
             :class="twMerge('btn btn-primary btn-sm', isUIUpgrading ? 'animate-pulse' : '')"
             @click="handlerClickUpgradeUI"
@@ -193,7 +208,7 @@
 </template>
 
 <script setup lang="ts">
-import { isReF1ndSingBox, isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
+import { isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
 import { ALL_THEME, FONTS } from '@/constant'
@@ -214,6 +229,7 @@ import {
   dashboardTransparent,
   defaultTheme,
   disablePullToRefresh,
+  displayAllFeatures,
   font,
   swipeInTabs,
 } from '@/store/settings'

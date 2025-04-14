@@ -82,6 +82,7 @@ export const checkUpgradeCore = useStorage('config/check-upgrade-core', true)
 export const autoUpgradeCore = useStorage('config/auto-upgrade-core', false)
 export const swipeInTabs = useStorage('config/swipe-in-tabs', false)
 export const disablePullToRefresh = useStorage('config/disable-pull-to-refresh', true)
+export const displayAllFeatures = useStorage('config/display-all-features', false)
 
 // overview
 export const splitOverviewPage = useStorage('config/split-overview-page', false)
