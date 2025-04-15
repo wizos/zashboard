@@ -7,7 +7,7 @@ import { useNotification } from './composables/notification'
 import { FONTS } from './constant'
 import { getBase64FromIndexedDB, isPreferredDark, LOCAL_IMAGE } from './helper/utils'
 import {
-  blurryEffect,
+  blurIntensity,
   customBackgroundURL,
   dashboardTransparent,
   disablePullToRefresh,
@@ -93,6 +93,14 @@ onMounted(() => {
     },
   )
 })
+
+const blurClass = computed(() => {
+  if (!backgroundImage.value || blurIntensity.value === 0) {
+    return ''
+  }
+
+  return `blur-intensity-${blurIntensity.value}`
+})
 </script>
 
 <template>
@@ -104,7 +112,7 @@ onMounted(() => {
       fontClassName,
       backgroundImage &&
         `custom-background-${dashboardTransparent} custom-background bg-cover bg-center`,
-      backgroundImage && blurryEffect && 'blurry-effect',
+      blurClass,
     ]"
     :style="backgroundImage"
   >

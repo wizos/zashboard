@@ -83,7 +83,7 @@ export const autoUpgradeCore = useStorage('config/auto-upgrade-core', false)
 export const swipeInTabs = useStorage('config/swipe-in-tabs', false)
 export const disablePullToRefresh = useStorage('config/disable-pull-to-refresh', true)
 export const displayAllFeatures = useStorage('config/display-all-features', false)
-export const blurryEffect = useStorage('config/blurry-effect', true)
+export const blurIntensity = useStorage('config/blur-intensity', 10)
 export const scrollAnimationEffect = useStorage('config/scroll-animation-effect', true)
 
 // overview

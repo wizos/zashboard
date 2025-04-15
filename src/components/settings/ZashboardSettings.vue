@@ -137,11 +137,16 @@
           </div>
 
           <div class="flex items-center gap-2">
-            {{ $t('blurryEffect') }}
+            {{ $t('blurIntensity') }}
             <input
-              type="checkbox"
-              v-model="blurryEffect"
-              class="toggle"
+              type="range"
+              min="0"
+              max="40"
+              v-model="blurIntensity"
+              class="range max-w-64"
+              @touchstart.stop
+              @touchmove.stop
+              @touchend.stop
             />
           </div>
         </template>
@@ -239,7 +244,7 @@ import {
 import {
   autoTheme,
   autoUpgrade,
-  blurryEffect,
+  blurIntensity,
   customBackgroundURL,
   customThemes,
   darkTheme,

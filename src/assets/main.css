@@ -83,14 +83,17 @@
   }
 }
 
-.blurry-effect {
-  .card,
-  .collapse,
-  .sidebar,
-  .ctrls-bar,
-  .nav-bar,
-  .table {
-    @apply backdrop-blur-md;
+@for $i from 0 to 40 {
+  .blur-intensity-$(i) {
+    .card,
+    .collapse,
+    .sidebar,
+    .ctrls-bar,
+    .nav-bar,
+    .table {
+      /* prettier-ignore */
+      backdrop-filter: blur($(i)px);
+    }
   }
 }
 
