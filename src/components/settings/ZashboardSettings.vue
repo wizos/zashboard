@@ -121,22 +121,31 @@
             @change="handlerFileChange"
           />
         </div>
-        <div
-          class="flex items-center gap-2"
-          v-if="customBackgroundURL"
-        >
-          {{ $t('transparent') }}
-          <input
-            type="range"
-            min="0"
-            max="100"
-            v-model="dashboardTransparent"
-            class="range max-w-64"
-            @touchstart.stop
-            @touchmove.stop
-            @touchend.stop
-          />
-        </div>
+        <template v-if="customBackgroundURL">
+          <div class="flex items-center gap-2">
+            {{ $t('transparent') }}
+            <input
+              type="range"
+              min="0"
+              max="100"
+              v-model="dashboardTransparent"
+              class="range max-w-64"
+              @touchstart.stop
+              @touchmove.stop
+              @touchend.stop
+            />
+          </div>
+
+          <div class="flex items-center gap-2">
+            {{ $t('blurryEffect') }}
+            <input
+              type="checkbox"
+              v-model="blurryEffect"
+              class="toggle"
+            />
+          </div>
+        </template>
+
         <div class="flex items-center gap-2 md:hidden">
           {{ $t('swipeInTabs') }}
           <input
@@ -223,6 +232,7 @@ import {
 import {
   autoTheme,
   autoUpgrade,
+  blurryEffect,
   customBackgroundURL,
   customThemes,
   darkTheme,

@@ -83,6 +83,17 @@
   }
 }
 
+.blurry-effect {
+  .card,
+  .collapse,
+  .sidebar,
+  .ctrls-bar,
+  .nav-bar,
+  .table {
+    @apply backdrop-blur-md;
+  }
+}
+
 .tippy-box {
   @apply bg-neutral text-neutral-content z-[9999] shadow-md;
 }

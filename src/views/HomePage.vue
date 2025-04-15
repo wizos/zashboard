@@ -8,7 +8,7 @@
       >
         <div
           v-if="ctrlsMap[route.name as string] && isSidebarCollapsed"
-          class="bg-base-100 w-full"
+          class="bg-base-100 ctrls-bar w-full"
         >
           <component
             :is="ctrlsMap[route.name as string]"
@@ -32,7 +32,7 @@
         </div>
         <template v-if="isMiddleScreen">
           <div
-            class="shrink-0"
+            class="nav-bar shrink-0"
             :class="isPWA ? 'h-[5.5rem]' : 'h-14'"
           />
           <div

@@ -177,6 +177,7 @@ const zh: LANG_MESSAGE = {
   displayAllFeatures: '显示所有功能',
   displayAllFeaturesTip:
     '显示所有功能，包括sing-box官方版本不支持的功能，如果您使用了fork版本的sing-box支持其中的某些功能，可以尝试启用',
+  blurryEffect: '磨玻璃效果',
 }
 
 export default zh
