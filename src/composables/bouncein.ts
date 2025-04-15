@@ -1,9 +1,10 @@
 import { isMiddleScreen } from '@/helper/utils'
+import { scrollAnimationEffect } from '@/store/settings'
 import { useCurrentElement } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, type ComputedRef } from 'vue'
 
 export function useBounceOnVisible(className = 'bounce-in') {
-  if (!isMiddleScreen.value) return
+  if (!isMiddleScreen.value || !scrollAnimationEffect.value) return
 
   const el = useCurrentElement() as ComputedRef<HTMLElement | null>
   const observer = new IntersectionObserver(

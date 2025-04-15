@@ -188,6 +188,23 @@ div {
   }
 }
 
+@keyframes bounceInForPC {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .bounce-in {
   animation: bounceIn 0.4s ease-out;
+}
+
+@media screen and (min-width: 1024px) {
+  .bounce-in {
+    animation: bounceInForPC 0.4s ease-out;
+  }
 }

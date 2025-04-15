@@ -181,6 +181,7 @@ const ru: LANG_MESSAGE = {
   displayAllFeaturesTip:
     'Показать все функции, включая те, которые не поддерживаются официальной версией sing-box. Если вы используете форк sing-box, поддерживающий некоторые из этих функций, вы можете попробовать их включить.',
   blurryEffect: 'Туманное эффект',
+  scrollAnimationEffect: 'Эффект анимации прокрутки',
 }
 
 export default ru

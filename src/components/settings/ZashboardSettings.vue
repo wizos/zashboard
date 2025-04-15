@@ -145,7 +145,14 @@
             />
           </div>
         </template>
-
+        <div class="flex items-center gap-2 md:hidden">
+          {{ $t('scrollAnimationEffect') }}
+          <input
+            type="checkbox"
+            v-model="scrollAnimationEffect"
+            class="toggle"
+          />
+        </div>
         <div class="flex items-center gap-2 md:hidden">
           {{ $t('swipeInTabs') }}
           <input
@@ -241,6 +248,7 @@ import {
   disablePullToRefresh,
   displayAllFeatures,
   font,
+  scrollAnimationEffect,
   swipeInTabs,
 } from '@/store/settings'
 import {
