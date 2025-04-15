@@ -1,38 +1,35 @@
 import { isMiddleScreen } from '@/helper/utils'
-import { getCurrentInstance, onBeforeUnmount, onMounted } from 'vue'
+import { useCurrentElement } from '@vueuse/core'
+import { onBeforeUnmount, onMounted, type ComputedRef } from 'vue'
 
-export function useBounceOnVisible(className = 'bounce-in', triggerOnce = false) {
+export function useBounceOnVisible(className = 'bounce-in') {
   if (!isMiddleScreen.value) return
 
-  let observer: IntersectionObserver | null = null
+  const el = useCurrentElement() as ComputedRef<HTMLElement | null>
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        el.value?.classList.add(className)
+        el.value!.style.opacity = 'unset'
+      } else {
+        el.value?.classList.remove(className)
+        el.value!.style.opacity = '0'
+      }
+    },
+    {
+      threshold: 0,
+      rootMargin: '10px 0px 10px 0px',
+    },
+  )
 
   onMounted(() => {
-    const instance = getCurrentInstance()
-    const el = instance?.proxy?.$el as HTMLElement | null
-    if (!el) return
+    if (!el.value) return
 
-    observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add(className)
-
-          if (triggerOnce && observer) {
-            observer.unobserve(el)
-          }
-        } else {
-          el.classList.remove(className)
-        }
-      },
-      {
-        threshold: 0,
-        rootMargin: '10px 0px 10px 0px',
-      },
-    )
-
-    observer.observe(el)
+    el.value.style.opacity = '0'
+    observer.observe(el.value)
   })
 
   onBeforeUnmount(() => {
-    observer?.disconnect()
+    observer.disconnect()
   })
 }
