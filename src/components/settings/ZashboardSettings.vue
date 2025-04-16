@@ -99,9 +99,9 @@
         </div>
         <div class="flex items-center gap-2">
           <span class="shrink-0"> {{ $t('customBackgroundURL') }} </span>
-          <div class="join">
+          <div class="join flex-1">
             <TextInput
-              class="join-item max-w-64 flex-1"
+              class="join-item w-48 max-w-64 flex-1"
               v-model="customBackgroundURL"
               :clearable="true"
               @update:modelValue="handlerBackgroundURLChange"
