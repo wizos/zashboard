@@ -73,7 +73,7 @@ const handlerSearchInputClick = (e: Event) => {
     placement: 'bottom-start',
     trigger: 'click',
     interactive: true,
-    appendTo: 'parent',
+    appendTo: document.body,
     arrow: false,
   })
 }

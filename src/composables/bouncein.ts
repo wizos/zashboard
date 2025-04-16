@@ -1,12 +1,12 @@
 import { isMiddleScreen } from '@/helper/utils'
 import { scrollAnimationEffect } from '@/store/settings'
 import { useCurrentElement, useElementVisibility } from '@vueuse/core'
-import { onMounted, watch, type ComputedRef } from 'vue'
+import { onMounted, watch } from 'vue'
 
 export function useBounceOnVisible(className = 'bounce-in') {
   if (!isMiddleScreen.value || !scrollAnimationEffect.value) return
 
-  const el = useCurrentElement() as ComputedRef<HTMLElement | null>
+  const el = useCurrentElement<HTMLElement>()
   const visible = useElementVisibility(el)
 
   onMounted(() => {

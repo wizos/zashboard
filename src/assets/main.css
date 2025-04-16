@@ -59,8 +59,15 @@
     .bg-primary,
     .card,
     .collapse,
+    .input,
+    .select,
+    .toggle,
     .tabs {
       @apply bg-base-100/$(i);
+    }
+
+    option {
+      @apply bg-base-100;
     }
 
     .bg-base-200,
@@ -70,11 +77,19 @@
     }
 
     .bg-primary:not(.tab.tab-active) {
-      @apply bg-primary/$(i);
+      @if $i > 60 {
+        @apply bg-primary/$(i);
+      } @else  {
+        @apply bg-primary/60;
+      }
     }
 
-    .bg-primary .latency-tag.bg-base-100 {
-      @apply bg-base-300/$(i);
+    .bg-primary .latency-tag {
+      @if $i > 90 {
+        @apply bg-base-100/$(i);
+      } @else  {
+        @apply bg-base-100/90;
+      }
     }
 
     .home-page.bg-base-200\/50 {
