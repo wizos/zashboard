@@ -76,6 +76,14 @@
       @apply bg-base-200/$(i);
     }
 
+    .modal-box {
+      @if $i > 70 {
+        @apply bg-base-100/$(i);
+      } @else  {
+        @apply bg-base-100/70;
+      }
+    }
+
     .bg-primary:not(.tab.tab-active) {
       @if $i > 60 {
         @apply bg-primary/$(i);
@@ -105,7 +113,9 @@
     .sidebar,
     .ctrls-bar,
     .nav-bar,
-    .table {
+    .modal-box,
+    .table,
+    .table thead {
       /* prettier-ignore */
       backdrop-filter: blur($(i)px);
     }
