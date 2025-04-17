@@ -55,6 +55,8 @@ const handlerSearchInputClick = (e: Event) => {
   }
   const menus = document.createElement('div')
 
+  menus.className = 'max-h-64 overflow-y-auto overflow-x-hidden scrollbar-hidden min-w-24'
+
   for (const item of props.menus) {
     const itemDiv = document.createElement('div')
 

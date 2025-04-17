@@ -173,9 +173,7 @@ const handlerGroupClick = async () => {
     activeMode.value = true
     await sleep(50)
     transitionAll.value = true
-    if (topBottomValue < innerHeight * 0.15) {
-      cardPosition.value[topBottomKey] = innerHeight * 0.15 + 'px'
-    }
+    cardPosition.value[topBottomKey] = Math.max(topBottomValue, innerHeight * 0.15) + 'px'
     modalMode.value = true
     transitionEndCallback.value = () => {
       diplayAllContent.value = true
