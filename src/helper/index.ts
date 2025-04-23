@@ -204,6 +204,15 @@ export const getNetworkTypeFromConnection = (connection: Connection) => {
   return `${connection.metadata.type} | ${connection.metadata.network}`
 }
 
+export const getInboundUserFromConnection = (connection: Connection) => {
+  return (
+    connection.metadata.inboundUser ||
+    connection.metadata.inboundName ||
+    connection.metadata.inboundPort ||
+    '-'
+  )
+}
+
 export const getToolTipForParams = (
   params: ToolTipParams,
   config: {
