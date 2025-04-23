@@ -183,6 +183,8 @@ const en = {
   importFromFile: 'Import From File',
   importFromUrl: 'Import From URL',
   sync: 'Sync',
+  upgradeSuccess: 'Upgrade Success',
+  upgradeFailed: 'Upgrade Failed',
 }
 
 export type LANG_MESSAGE = typeof en
