@@ -3,7 +3,7 @@
     ref="cardRef"
     :class="
       twMerge(
-        'bg-base-200 flex cursor-pointer flex-col items-start gap-[2px] rounded-md',
+        'bg-base-200 flex cursor-pointer flex-col items-start gap-1 rounded-md',
         active ? 'bg-primary text-primary-content' : 'sm:hover:bg-base-300',
         isSmallCard ? 'p-1' : 'p-2',
       )
