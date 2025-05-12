@@ -187,6 +187,9 @@ const ru: LANG_MESSAGE = {
   sync: 'Синхронизировать',
   upgradeSuccess: 'Обновление успешно',
   numberOfChartsInSidebar: 'Количество графиков в боковой панели',
+  displayWeights: 'Показать веса',
+  flushWeights: 'Очистить веса',
+  flushSmartWeights: 'Очистить Smart веса',
 }
 
 export default ru

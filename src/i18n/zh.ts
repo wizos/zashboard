@@ -184,6 +184,9 @@ const zh: LANG_MESSAGE = {
   sync: '同步',
   upgradeSuccess: '更新成功',
   numberOfChartsInSidebar: '侧边栏图表数量',
+  displayWeights: '显示权重',
+  flushWeights: '清空权重',
+  flushSmartWeights: '清空Smart权重',
 }
 
 export default zh

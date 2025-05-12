@@ -89,6 +89,17 @@ export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeou
   })
 }
 
+export const fetchSmartGroupWeightsAPI = (proxyName: string) => {
+  return axios.get<{
+    message: string
+    weights: Record<string, number>
+  }>(`/group/${encodeURIComponent(proxyName)}/weights`)
+}
+
+export const flushSmartGroupWeightsAPI = () => {
+  return axios.post(`/cache/smart/flush`)
+}
+
 export const fetchProxyProviderAPI = () => {
   return axios.get<{ providers: Record<string, ProxyProvider> }>('/providers/proxies')
 }

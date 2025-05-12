@@ -185,6 +185,9 @@ const en = {
   sync: 'Sync',
   upgradeSuccess: 'Upgrade Success',
   numberOfChartsInSidebar: 'Number of Charts in Sidebar',
+  displayWeights: 'Display Weights',
+  flushWeights: 'Flush Weights',
+  flushSmartWeights: 'Flush Smart Weights',
 }
 
 export type LANG_MESSAGE = typeof en

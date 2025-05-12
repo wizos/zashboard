@@ -159,6 +159,7 @@ export enum PROXY_TYPE {
   Selector = 'selector',
   Fallback = 'fallback',
   URLTest = 'urltest',
+  Smart = 'smart',
   LoadBalance = 'loadbalance',
 }
 
