@@ -5,7 +5,7 @@ import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid, removeBackend } from '@/store/setup'
 import type { Backend, Config, DNSQuery, Proxy, ProxyProvider, Rule, RuleProvider } from '@/types'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { debounce } from 'lodash'
 import ReconnectingWebSocket from 'reconnectingwebsocket'
 import { computed, nextTick, ref, watch } from 'vue'
@@ -16,25 +16,32 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
-axios.interceptors.response.use(null, (error) => {
-  const { showNotification } = useNotification()
+axios.interceptors.response.use(
+  null,
+  (
+    error: AxiosError<{
+      message: string
+    }>,
+  ) => {
+    const { showNotification } = useNotification()
 
-  if (error.status === 401 && activeUuid.value) {
-    removeBackend(activeUuid.value)
-    activeUuid.value = null
-    router.push({ name: ROUTE_NAME.setup })
-    nextTick(() => {
-      showNotification({ content: 'unauthorizedTip' })
-    })
-  } else {
-    showNotification({
-      content: error.response?.data?.message || error.message,
-      type: 'alert-error',
-    })
-  }
+    if (error.status === 401 && activeUuid.value) {
+      removeBackend(activeUuid.value)
+      activeUuid.value = null
+      router.push({ name: ROUTE_NAME.setup })
+      nextTick(() => {
+        showNotification({ content: 'unauthorizedTip' })
+      })
+    } else if (!error.config?.url?.endsWith('/delay')) {
+      showNotification({
+        content: error.response?.data?.message || error.message,
+        type: 'alert-error',
+      })
+    }
 
-  return Promise.reject(error)
-})
+    return Promise.reject(error)
+  },
+)
 
 export const version = ref()
 export const isCoreUpdateAvailable = ref(false)
