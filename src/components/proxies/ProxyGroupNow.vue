@@ -24,7 +24,7 @@
     />
     {{ $t('loadBalance') }}
   </template>
-  <template v-else-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.Smart">
+  <template v-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.Smart">
     <div
       class="btn btn-xs h-5"
       @click="displayWeights"
