@@ -37,9 +37,10 @@ axios.interceptors.response.use(
         content: error.response?.data?.message || error.message,
         type: 'alert-error',
       })
+      return Promise.reject(error)
     }
 
-    return Promise.reject(error)
+    return error
   },
 )
 
@@ -250,17 +251,58 @@ export const isBackendAvailable = async (backend: Backend, timeout: number = 100
   }
 }
 
-export const fetchIsUIUpdateAvailable = async () => {
-  const response = await fetch('https://api.github.com/repos/Zephyruso/zashboard/releases/latest')
-  const { tag_name } = await response.json()
+const CACHE_DURATION = 1000 * 60 * 60
 
-  return tag_name && tag_name !== `v${zashboardVersion.value}`
+interface CacheEntry<T> {
+  timestamp: number
+  data: T
+}
+
+export async function fetchWithLocalCache<T>(url: string): Promise<T> {
+  const cacheKey = 'cache/' + url
+  const cacheRaw = localStorage.getItem(cacheKey)
+
+  if (cacheRaw) {
+    try {
+      const cache: CacheEntry<T> = JSON.parse(cacheRaw)
+      const now = Date.now()
+
+      if (now - cache.timestamp < CACHE_DURATION) {
+        return cache.data
+      }
+    } catch (e) {
+      console.warn('Failed to parse cache for', url, e)
+    }
+  }
+
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Fetch failed: ${response.status} ${response.statusText}`)
+  }
+
+  const data: T = await response.json()
+  const newCache: CacheEntry<T> = {
+    timestamp: Date.now(),
+    data,
+  }
+
+  localStorage.setItem(cacheKey, JSON.stringify(newCache))
+  return data
+}
+
+export const fetchIsUIUpdateAvailable = async () => {
+  const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
+    'https://api.github.com/repos/Zephyruso/zashboard/releases/latest',
+  )
+
+  return Boolean(tag_name && tag_name !== `v${zashboardVersion.value}`)
 }
 
 const check = async (url: string, versionNumber: string) => {
-  const response = await fetch(`https://api.github.com/repos/MetaCubeX/mihomo${url}`)
-  const { assets } = await response.json()
-  const alreadyLatest = assets.some(({ name }: { name: string }) => name.includes(versionNumber))
+  const { assets } = await fetchWithLocalCache<{ assets: { name: string }[] }>(
+    `https://api.github.com/repos/MetaCubeX/mihomo${url}`,
+  )
+  const alreadyLatest = assets.some(({ name }) => name.includes(versionNumber))
 
   return !alreadyLatest
 }
@@ -269,10 +311,11 @@ export const fetchBackendUpdateAvailableAPI = async () => {
   const match = /(alpha|beta|meta)-?(\w+)/.exec(version.value)
 
   if (!match) {
-    const response = await fetch(`https://api.github.com/repos/MetaCubeX/mihomo/releases/latest`)
-    const { tag_name } = await response.json()
+    const { tag_name } = await fetchWithLocalCache<{ tag_name: string }>(
+      'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest',
+    )
 
-    return tag_name && !tag_name.endsWith(version.value)
+    return Boolean(tag_name && !tag_name.endsWith(version.value))
   }
 
   const channel = match[1],

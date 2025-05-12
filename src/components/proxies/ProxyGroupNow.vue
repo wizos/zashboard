@@ -33,6 +33,7 @@
     </div>
     <WeightsModal
       @click.stop
+      @contextmenu.stop
       :name="proxyGroup.name"
       :is-open="isWeightsModalOpen"
       @update:is-open="isWeightsModalOpen = $event"
