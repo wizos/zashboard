@@ -150,17 +150,17 @@
             />
           </div>
         </template>
-      </div>
-      <div
-        class="flex items-center gap-2"
-        v-if="!isSingBox || displayAllFeatures"
-      >
-        {{ $t('autoUpgrade') }}
-        <input
-          class="toggle"
-          type="checkbox"
-          v-model="autoUpgrade"
-        />
+        <div
+          class="flex items-center gap-2"
+          v-if="!isSingBox || displayAllFeatures"
+        >
+          {{ $t('autoUpgrade') }}
+          <input
+            class="toggle"
+            type="checkbox"
+            v-model="autoUpgrade"
+          />
+        </div>
       </div>
       <div class="grid max-w-3xl grid-cols-2 gap-2 sm:grid-cols-4">
         <template v-if="!isSingBox || displayAllFeatures">
