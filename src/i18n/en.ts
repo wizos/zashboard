@@ -138,6 +138,8 @@ const en = {
   manual: 'Manual',
   tableWidthMode: 'Table Width Mode',
   testFinishedTip: '{number} Test Finished',
+  testFinishedResultTip: 'Test Finished, {success} Success, {failed} Timeout',
+  testFailedTip: 'Latency Test Timeout',
   updateFinishedTip: '{number} Update Finished',
   independentLatencyTest: 'Independent Latency Test',
   independentLatencyTestTip:

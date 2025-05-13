@@ -145,16 +145,50 @@ const latencyTestForSingle = async (proxyName: string, url: string, timeout: num
     }
   }
 
-  await fetchProxyLatencyAPI(independentLatencyTest.value ? proxyName : now, url, timeout)
+  return await fetchProxyLatencyAPI(independentLatencyTest.value ? proxyName : now, url, timeout)
 }
+const { showNotification } = useNotification()
 
 export const proxyLatencyTest = async (
   proxyName: string,
   url = speedtestUrl.value,
   timeout = speedtestTimeout.value,
 ) => {
-  await latencyTestForSingle(proxyName, url, timeout)
+  const res = await latencyTestForSingle(proxyName, url, timeout)
   await fetchProxies()
+
+  if (res.status !== 200) {
+    showNotification({
+      content: 'testFailedTip',
+      type: 'alert-error',
+      timeout: 2000,
+    })
+  }
+}
+
+const latencyTip = (finished: number, total: number, failed: number) => {
+  const isFinished = finished === total
+
+  if (isFinished) {
+    showNotification({
+      content: 'testFinishedResultTip',
+      params: {
+        success: `${total - failed}`,
+        failed: `${failed}`,
+      },
+      type: failed ? 'alert-warning' : 'alert-success',
+      timeout: 2000,
+    })
+  } else {
+    showNotification({
+      content: 'testFinishedTip',
+      params: {
+        number: `${finished}/${total}`,
+      },
+      type: 'alert-info',
+      timeout: 0,
+    })
+  }
 }
 
 const fetchProxiesDebounced = debounce(fetchProxies, 800)
@@ -163,11 +197,33 @@ const proxyLatencyTestDebounced = async (
   url = speedtestUrl.value,
   timeout = speedtestTimeout.value,
 ) => {
-  await latencyTestForSingle(proxyName, url, timeout)
+  const res = await latencyTestForSingle(proxyName, url, timeout)
   await fetchProxiesDebounced()
+  return res
 }
 
 const limiter = pLimit(5)
+const testLatencyOneByOneWithTip = async (nodes: string[], url = speedtestUrl.value) => {
+  let testDone = 0
+  let testFailed = 0
+
+  return await Promise.all(
+    nodes.map((name) =>
+      limiter(async () => {
+        const res = await proxyLatencyTestDebounced(
+          name,
+          url,
+          Math.min(3000, speedtestTimeout.value),
+        )
+        testDone++
+        if (res.status !== 200) {
+          testFailed++
+        }
+        latencyTip(testDone, nodes.length, testFailed)
+      }),
+    ),
+  )
+}
 
 export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
   const proxyNode = proxyMap.value[proxyGroupName]
@@ -179,17 +235,7 @@ export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
       proxyNode.type.toLowerCase() as PROXY_TYPE,
     )
   ) {
-    let testDone = 0
-
-    return await Promise.all(
-      all.map((name) =>
-        limiter(async () => {
-          await proxyLatencyTestDebounced(name, url, Math.min(3000, speedtestTimeout.value))
-          testDone++
-          latencyTip(testDone, all.length)
-        }),
-      ),
-    )
+    return testLatencyOneByOneWithTip(all, url)
   }
 
   const timeout = Math.max(5000, speedtestTimeout.value)
@@ -217,21 +263,8 @@ export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
 
 export const allProxiesLatencyTest = async () => {
   const proxyNode = Object.keys(proxyMap.value).filter((proxy) => !isProxyGroup(proxy))
-  let testDone = 0
 
-  return await Promise.all(
-    proxyNode.map((name) =>
-      limiter(async () => {
-        await proxyLatencyTestDebounced(
-          name,
-          speedtestUrl.value,
-          Math.min(3000, speedtestTimeout.value),
-        )
-        testDone++
-        latencyTip(testDone, proxyNode.length)
-      }),
-    ),
-  )
+  return testLatencyOneByOneWithTip(proxyNode)
 }
 
 const getLatencyFromHistory = (history: Proxy['history']) => {
@@ -262,18 +295,4 @@ export const getNowProxyNodeName = (name: string) => {
   }
 
   return node.name
-}
-
-const { showNotification } = useNotification()
-const latencyTip = (finished: number, total: number) => {
-  const isFinished = finished === total
-
-  showNotification({
-    content: 'testFinishedTip',
-    params: {
-      number: `${finished}/${total}`,
-    },
-    type: isFinished ? 'alert-success' : 'alert-warning',
-    timeout: isFinished ? 2000 : 0,
-  })
 }

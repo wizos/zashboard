@@ -140,6 +140,8 @@ const ru: LANG_MESSAGE = {
   manual: 'Ручной',
   tableWidthMode: 'Режим ширины таблицы',
   testFinishedTip: '{number} Тест завершен',
+  testFinishedResultTip: 'Тест завершен, {success} Успешно, {failed} Таймаут',
+  testFailedTip: 'Тест задержки таймаут',
   updateFinishedTip: '{number} Обновление завершено',
   independentLatencyTest: 'Независимый тест задержки',
   independentLatencyTestTip:
