@@ -79,6 +79,10 @@ export const selectProxyAPI = (proxyGroup: string, name: string) => {
   return axios.put(`/proxies/${encodeURIComponent(proxyGroup)}`, { name })
 }
 
+export const deleteFixedProxyAPI = (proxyGroup: string) => {
+  return axios.delete(`/proxies/${encodeURIComponent(proxyGroup)}`)
+}
+
 export const fetchProxyLatencyAPI = (proxyName: string, url: string, timeout: number) => {
   return axios.get<{ delay: number }>(`/proxies/${encodeURIComponent(proxyName)}/delay`, {
     params: {

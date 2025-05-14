@@ -1,4 +1,5 @@
 import {
+  deleteFixedProxyAPI,
   disconnectByIdAPI,
   fetchProxiesAPI,
   fetchProxyGroupLatencyAPI,
@@ -243,6 +244,9 @@ export const proxyGroupLatencyTest = async (proxyGroupName: string) => {
       proxyNode.type.toLowerCase() as PROXY_TYPE,
     )
   ) {
+    if (proxyNode.fixed) {
+      deleteFixedProxyAPI(proxyGroupName)
+    }
     return testLatencyOneByOneWithTip(all, url)
   }
 

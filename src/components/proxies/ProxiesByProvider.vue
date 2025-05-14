@@ -13,26 +13,28 @@ const props = defineProps<{
 }>()
 
 const groupedProxies = computed(() => {
-  const renders: Record<string, string[]> = {}
+  const groupdProixes: Record<string, string[]> = {}
 
   for (const proxy of props.renderProxies) {
     const providerName =
       proxyProviederList.value.find((group) => group.proxies.find((node) => node.name === proxy))
         ?.name ?? ''
 
-    if (renders[providerName]) {
-      renders[providerName].push(proxy)
+    if (groupdProixes[providerName]) {
+      groupdProixes[providerName].push(proxy)
     } else {
-      renders[providerName] = [proxy]
+      groupdProixes[providerName] = [proxy]
     }
   }
 
-  return Object.entries(renders)
+  return ['', ...proxyProviederList.value.map((group) => group.name)]
+    .filter((providerName) => groupdProixes[providerName]?.length > 0)
+    .map((providerName) => [providerName, groupdProixes[providerName]])
 })
 </script>
 
 <template>
-  <div class="flex max-h-96 flex-col gap-2 overflow-x-hidden overflow-y-auto">
+  <div class="flex max-h-108 flex-col gap-2 overflow-x-hidden overflow-y-auto">
     <div
       v-for="([providerName, proxies], index) in groupedProxies"
       :key="index"
