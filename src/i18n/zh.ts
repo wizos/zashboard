@@ -193,6 +193,7 @@ const zh: LANG_MESSAGE = {
   IPInfoAPITip:
     '此API会用于IP检查中全球节点IP信息查询、连接详情中的IP地理信息查询、面板DNS查询中的IP地理信息查询。',
   general: '通用',
+  groupProxiesByProvider: '节点根据提供商分组',
 }
 
 export default zh

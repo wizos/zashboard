@@ -194,6 +194,7 @@ const en = {
   IPInfoAPITip:
     "This API will be used for IP checks in global node IP information queries, IP geolocation queries in connection details, and IP geolocation queries in zashboard's DNS query feature.",
   general: 'General',
+  groupProxiesByProvider: 'Group Proxies by Provider',
 }
 
 export type LANG_MESSAGE = typeof en

@@ -13,6 +13,7 @@ import {
 import {
   automaticDisconnection,
   collapseGroupMap,
+  groupProxiesByProvider,
   hideUnavailableProxies,
   manageHiddenGroup,
   minProxyCardWidth,
@@ -252,6 +253,14 @@ export default defineComponent({
               <div class="flex items-center gap-2">
                 {t('sortBy')}
                 {sort}
+              </div>
+              <div class="flex items-center gap-2">
+                {t('groupProxiesByProvider')}
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  v-model={groupProxiesByProvider.value}
+                />
               </div>
               <div class="flex items-center gap-2">
                 {t('unavailableProxy')}

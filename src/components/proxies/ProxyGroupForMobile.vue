@@ -67,16 +67,15 @@
 
       <div
         v-if="modalMode"
-        class="grid flex-1 grid-cols-2 gap-2 overflow-x-hidden overflow-y-auto p-2"
-        style="max-height: calc(50dvh - 5rem)"
+        class="overflow-x-hidden overflow-y-auto p-2"
       >
-        <ProxyNodeCard
-          v-for="node in diplayAllContent ? renderProxies : renderProxies.slice(0, 16)"
-          :key="node"
-          :name="node"
-          :group-name="proxyGroup.name"
-          :active="node === proxyGroup.now"
-          @click.stop="handlerProxySelect(node)"
+        <Component
+          :is="groupProxiesByProvider ? ProxiesByProvider : ProxiesContent"
+          :name="name"
+          :now="proxyGroup.now"
+          :render-proxies="renderProxies"
+          :show-full-content="true"
+          style="max-height: calc(50dvh - 5rem)"
         />
       </div>
     </div>
@@ -86,17 +85,17 @@
 <script setup lang="ts">
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
-import { PROXY_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
-import { hiddenGroupMap, proxyGroupLatencyTest, proxyMap, selectProxy } from '@/store/proxies'
-import { blurIntensity, manageHiddenGroup } from '@/store/settings'
+import { hiddenGroupMap, proxyGroupLatencyTest, proxyMap } from '@/store/proxies'
+import { blurIntensity, groupProxiesByProvider, manageHiddenGroup } from '@/store/settings'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'
 import LatencyTag from './LatencyTag.vue'
+import ProxiesByProvider from './ProxiesByProvider.vue'
+import ProxiesContent from './ProxiesContent.vue'
 import ProxyGroupNow from './ProxyGroupNow.vue'
 import ProxyIcon from './ProxyIcon.vue'
-import ProxyNodeCard from './ProxyNodeCard.vue'
 
 const props = defineProps<{
   name: string
@@ -193,12 +192,6 @@ const hiddenGroup = computed({
 
 const handlerGroupToggle = () => {
   hiddenGroup.value = !hiddenGroup.value
-}
-
-const handlerProxySelect = (name: string) => {
-  if (proxyGroup.value.type.toLowerCase() === PROXY_TYPE.LoadBalance) return
-
-  selectProxy(props.name, name)
 }
 
 useBounceOnVisible(cardRef)

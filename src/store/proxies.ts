@@ -120,13 +120,21 @@ export const fetchProxies = async () => {
   })
 }
 
-export const selectProxy = async (proxyGroup: string, name: string) => {
-  await selectProxyAPI(proxyGroup, name)
-  proxyMap.value[proxyGroup].now = name
+export const handlerProxySelect = async (proxyGroupName: string, proxyName: string) => {
+  const proxyGroup = proxyMap.value[proxyGroupName]
+
+  if (proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance) return
+  if (proxyGroup.now === proxyName) {
+    await fetchProxies()
+    if (proxyGroup.now === proxyName) return
+  }
+
+  await selectProxyAPI(proxyGroupName, proxyName)
+  proxyMap.value[proxyGroupName].now = proxyName
 
   if (automaticDisconnection.value) {
     activeConnections.value
-      .filter((c) => c.chains.includes(proxyGroup))
+      .filter((c) => c.chains.includes(proxyGroupName))
       .forEach((c) => disconnectByIdAPI(c.id))
   }
   fetchProxies()
