@@ -194,6 +194,9 @@ const zh: LANG_MESSAGE = {
     '此API会用于IP检查中全球节点IP信息查询、连接详情中的IP地理信息查询、面板DNS查询中的IP地理信息查询。',
   general: '通用',
   groupProxiesByProvider: '节点根据提供商分组',
+  RarelyUsed: '很少使用',
+  OccasionalUsed: '偶尔使用',
+  MostUsed: '经常使用',
 }
 
 export default zh

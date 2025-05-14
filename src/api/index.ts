@@ -100,7 +100,7 @@ export const fetchProxyGroupLatencyAPI = (proxyName: string, url: string, timeou
 export const fetchSmartGroupWeightsAPI = (proxyName: string) => {
   return axios.get<{
     message: string
-    weights: Record<string, number>
+    weights: Record<string, string>
   }>(`/group/${encodeURIComponent(proxyName)}/weights`)
 }
 

@@ -47,8 +47,10 @@
 <script setup lang="ts">
 import { PROXY_CARD_SIZE } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
+import { i18n } from '@/i18n'
 import { getIPv6ByName, getTestUrl, proxyLatencyTest, proxyMap } from '@/store/proxies'
 import { IPv6test, proxyCardSize, truncateProxyName } from '@/store/settings'
+import { smartWeightsMap } from '@/store/smart'
 import { twMerge } from 'tailwind-merge'
 import { computed, ref } from 'vue'
 import LatencyTag from './LatencyTag.vue'
@@ -87,10 +89,12 @@ const typeFormatter = (type: string) => {
 const isSmallCard = computed(() => proxyCardSize.value === PROXY_CARD_SIZE.SMALL)
 const typeDescription = computed(() => {
   const type = typeFormatter(node.value.type)
+  const smartUsage = smartWeightsMap.value[props.groupName ?? '']?.[props.name]
+  const smartDesc = smartUsage ? i18n.global.t(smartUsage) : ''
   const isV6 = IPv6test.value && getIPv6ByName(node.value.name) ? 'IPv6' : ''
   const isUDP = node.value.udp ? (node.value.xudp ? 'xudp' : 'udp') : ''
 
-  return [type, isUDP, isV6].filter(Boolean).join(isSmallCard.value ? '/' : ' / ')
+  return [type, isUDP, smartDesc, isV6].filter(Boolean).join(isSmallCard.value ? '/' : ' / ')
 })
 const handlerLatencyTest = async () => {
   if (isLatencyTesting.value) return
