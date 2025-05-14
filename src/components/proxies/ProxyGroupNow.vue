@@ -1,16 +1,14 @@
 <template>
   <template v-if="proxyGroup.now">
-    <template v-if="icon">
-      <LockClosedIcon
-        class="h-4 w-4 shrink-0"
-        v-if="proxyGroup.fixed === proxyGroup.now"
-        @mouseenter="tipForFixed"
-      />
-      <ArrowRightCircleIcon
-        class="h-4 w-4 shrink-0"
-        v-else
-      />
-    </template>
+    <LockClosedIcon
+      class="h-4 w-4 shrink-0"
+      v-if="proxyGroup.fixed === proxyGroup.now"
+      @mouseenter="tipForFixed"
+    />
+    <ArrowRightCircleIcon
+      class="h-4 w-4 shrink-0"
+      v-else-if="icon"
+    />
 
     <ProxyName
       :name="proxyGroup.now"
@@ -18,10 +16,7 @@
     />
   </template>
   <template v-else-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.LoadBalance">
-    <CheckCircleIcon
-      class="h-4 w-4 shrink-0"
-      v-if="icon"
-    />
+    <CheckCircleIcon class="h-4 w-4 shrink-0" />
     {{ $t('loadBalance') }}
   </template>
   <template v-if="proxyGroup.type.toLowerCase() === PROXY_TYPE.Smart">
