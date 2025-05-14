@@ -22,19 +22,24 @@
 import VirtualScroller from '@/components/common/VirtualScroller.vue'
 import LogsCard from '@/components/logs/LogsCard.vue'
 import { isMiddleScreen } from '@/helper/utils'
-import { logFilter, logs } from '@/store/logs'
+import { logFilter, logPrefixFilter, logs } from '@/store/logs'
 import type { LogWithSeq } from '@/types'
 import { computed } from 'vue'
 
 const renderLogs = computed(() => {
-  if (logFilter.value) {
+  let renderLogs = logs.value
+
+  if (logFilter.value || logPrefixFilter.value) {
     const regex = new RegExp(logFilter.value, 'i')
 
-    return logs.value.filter((log) => {
-      return [log.payload, log.time, log.type].some((i) => regex.test(i))
+    renderLogs = logs.value.filter((log) => {
+      return (
+        [log.payload, log.time, log.type].some((i) => regex.test(i)) &&
+        (!logPrefixFilter.value || log.payload.startsWith(logPrefixFilter.value))
+      )
     })
   }
 
-  return logs.value
+  return renderLogs
 })
 </script>
