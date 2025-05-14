@@ -4,13 +4,28 @@ import type { Log, LogWithSeq } from '@/types'
 import { useStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { throttle } from 'lodash'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { logRetentionLimit, sourceIPLabelList } from './settings'
 
 export const logs = ref<LogWithSeq[]>([])
 export const logFilter = ref('')
 export const isPaused = ref(false)
 export const logLevel = useStorage<string>('config/log-level', LOG_LEVEL.Info)
+export const logPrefixFilter = ref('')
+export const logPrefixOptions = computed(() => {
+  const starts: string[] = []
+
+  for (const log of logs.value) {
+    const index = log.payload.indexOf(' ')
+    const start = index === -1 ? log.payload : log.payload.slice(0, index)
+
+    if (!starts.includes(start)) {
+      starts.push(start)
+    }
+  }
+
+  return starts.sort()
+})
 
 let cancel: () => void
 let logsTemp: LogWithSeq[] = []

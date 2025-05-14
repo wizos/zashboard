@@ -1,6 +1,15 @@
 import { isSingBox } from '@/api'
 import { LOG_LEVEL } from '@/constant'
-import { initLogs, isPaused, logFilter, logLevel, logs } from '@/store/logs'
+import { isMiddleScreen } from '@/helper/utils'
+import {
+  initLogs,
+  isPaused,
+  logFilter,
+  logLevel,
+  logPrefixFilter,
+  logPrefixOptions,
+  logs,
+} from '@/store/logs'
 import { logRetentionLimit, logSearchHistory } from '@/store/settings'
 import { PauseIcon, PlayIcon, WrenchScrewdriverIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { debounce } from 'lodash'
@@ -48,7 +57,7 @@ export default defineComponent({
     return () => {
       const levelSelect = (
         <select
-          class={['join-item select select-sm', !props.horizontal && 'w-full']}
+          class={['join-item select select-sm']}
           v-model={logLevel.value}
           onChange={initLogs}
         >
@@ -73,6 +82,23 @@ export default defineComponent({
           menusDeleteable={true}
           onUpdate:menus={(val) => (logSearchHistory.value = val)}
         />
+      )
+
+      const logPrefixSelect = (
+        <select
+          class={['join-item select select-sm w-36', !props.horizontal && 'w-full']}
+          v-model={logPrefixFilter.value}
+        >
+          <option value="">{t('all')}</option>
+          {logPrefixOptions.value.map((opt) => (
+            <option
+              key={opt}
+              value={opt}
+            >
+              {opt}
+            </option>
+          ))}
+        </select>
       )
 
       const settingsModal = (
@@ -118,10 +144,25 @@ export default defineComponent({
       )
 
       if (props.horizontal) {
+        if (isMiddleScreen.value) {
+          return (
+            <div class="flex flex-col items-center justify-between gap-2 p-2">
+              <div class="flex w-full items-center justify-between gap-2">
+                {logPrefixSelect}
+                {buttons}
+              </div>
+              <div class="join w-full">
+                {levelSelect}
+                {searchInput}
+              </div>
+            </div>
+          )
+        }
         return (
           <div class="flex items-center justify-between gap-2 p-2">
-            <div class="join max-w-96 flex-1">
+            <div class="join max-w-128 flex-1">
               {levelSelect}
+              {logPrefixSelect}
               {searchInput}
             </div>
             {buttons}
@@ -131,10 +172,13 @@ export default defineComponent({
       return (
         <div class="flex w-full flex-col items-center gap-2 p-2">
           <div class="flex w-full items-center gap-2">
-            {levelSelect}
+            {logPrefixSelect}
             {buttons}
           </div>
-          <div class="w-full">{searchInput}</div>
+          <div class="join w-full">
+            {levelSelect}
+            {searchInput}
+          </div>
         </div>
       )
     }
