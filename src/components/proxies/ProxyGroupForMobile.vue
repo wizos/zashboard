@@ -68,6 +68,7 @@
       <div
         v-if="modalMode"
         class="overflow-x-hidden overflow-y-auto p-2"
+        style="width: calc(100vw - 1rem)"
       >
         <Component
           :is="groupProxiesByProvider ? ProxiesByProvider : ProxiesContent"
