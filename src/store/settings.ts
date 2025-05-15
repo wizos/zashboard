@@ -81,11 +81,13 @@ export const dashboardTransparent = useStorage('config/dashboard-transparent', 9
 export const autoUpgrade = useStorage('config/auto-upgrade', false)
 export const checkUpgradeCore = useStorage('config/check-upgrade-core', true)
 export const autoUpgradeCore = useStorage('config/auto-upgrade-core', false)
+export const swipeInPages = useStorage('config/swipe-in-pages', true)
 export const swipeInTabs = useStorage('config/swipe-in-tabs', false)
 export const disablePullToRefresh = useStorage('config/disable-pull-to-refresh', true)
 export const displayAllFeatures = useStorage('config/display-all-features', false)
 export const blurIntensity = useStorage('config/blur-intensity', 10)
 export const scrollAnimationEffect = useStorage('config/scroll-animation-effect', true)
+export const IPInfoAPI = useStorage('config/ip-info-api', IP_INFO_API.IPWHOIS)
 
 // overview
 export const splitOverviewPage = useStorage('config/split-overview-page', false)
@@ -100,7 +102,6 @@ export const numberOfChartsInSidebar = useStorage<1 | 2 | 3>(
   'config/number-of-charts-in-sidebar',
   2,
 )
-export const IPInfoAPI = useStorage('config/ip-info-api', IP_INFO_API.IPWHOIS)
 
 // proxies
 export const collapseGroupMap = useStorage<Record<string, boolean>>('config/collapse-group-map', {})

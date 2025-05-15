@@ -34,6 +34,17 @@
           />
         </div>
         <div class="flex items-center gap-2 md:hidden">
+          {{ $t('swipeInPages') }}
+          <input
+            type="checkbox"
+            v-model="swipeInPages"
+            class="toggle"
+          />
+        </div>
+        <div
+          class="flex items-center gap-2 md:hidden"
+          v-if="swipeInPages"
+        >
           {{ $t('swipeInTabs') }}
           <input
             type="checkbox"
@@ -82,6 +93,7 @@ import {
   displayAllFeatures,
   IPInfoAPI,
   scrollAnimationEffect,
+  swipeInPages,
   swipeInTabs,
 } from '@/store/settings'
 import { QuestionMarkCircleIcon } from '@heroicons/vue/24/outline'

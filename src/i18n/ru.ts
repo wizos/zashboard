@@ -157,6 +157,7 @@ const ru: LANG_MESSAGE = {
   label: 'Метка',
   optional: 'Необязательно',
   swipeInTabs: 'Провести для переключения вкладок',
+  swipeInPages: 'Провести для переключения страниц',
   simpleCardPreset: 'Простой',
   detailedCardPreset: 'Подробный',
   refresh: 'Обновить',

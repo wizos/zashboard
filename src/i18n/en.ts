@@ -155,6 +155,7 @@ const en = {
   label: 'Label',
   optional: 'Optional',
   swipeInTabs: 'Swipe to Switch Between Tabs',
+  swipeInPages: 'Swipe to Switch Between Pages',
   simpleCardPreset: 'Simple Preset',
   detailedCardPreset: 'Detailed Preset',
   refresh: 'Refresh',
