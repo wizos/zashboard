@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { PROXY_CARD_SIZE } from '@/constant'
-import { useTooltip } from '@/helper/tooltip'
+import { checkTruncation } from '@/helper/tooltip'
 import { i18n } from '@/i18n'
 import { getIPv6ByName, getTestUrl, proxyLatencyTest, proxyMap } from '@/store/proxies'
 import { IPv6test, proxyCardSize, truncateProxyName } from '@/store/settings'
@@ -61,20 +61,6 @@ const props = defineProps<{
   active?: boolean
   groupName?: string
 }>()
-
-const { showTip } = useTooltip()
-const checkTruncation = (e: Event) => {
-  const target = e.target as HTMLElement
-  const { scrollWidth, clientWidth } = target
-
-  if (scrollWidth > clientWidth) {
-    showTip(e, target.innerText, {
-      delay: [1000, 0],
-      trigger: 'mouseenter',
-      touch: ['hold', 500],
-    })
-  }
-}
 
 const node = computed(() => proxyMap.value[props.name])
 const isLatencyTesting = ref(false)

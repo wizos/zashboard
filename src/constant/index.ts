@@ -271,7 +271,7 @@ export const DEFAULT_THEME = {
 export type THEME = Record<string, string>
 
 export enum IP_INFO_API {
-  IPWHOIS = 'ipwho.is',
   IPSB = 'ip.sb',
+  IPWHOIS = 'ipwho.is',
   IPAPI = 'ipapi.is',
 }
