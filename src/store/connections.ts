@@ -1,12 +1,12 @@
-import { fetchConnectionsAPI } from '@/api'
+import { disconnectByIdAPI, fetchConnectionsAPI } from '@/api'
 import { CONNECTION_TAB_TYPE, SORT_DIRECTION, SORT_TYPE } from '@/constant'
 import { getChainsStringFromConnection, getInboundUserFromConnection } from '@/helper'
 import type { Connection, ConnectionRawMessage } from '@/types'
-import { useStorage } from '@vueuse/core'
+import { useStorage, watchOnce } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { differenceWith } from 'lodash'
 import { computed, ref, watch } from 'vue'
-import { useConnectionCard } from './settings'
+import { autoDisconnectIdleUDP, autoDisconnectIdleUDPTime, useConnectionCard } from './settings'
 
 export const activeConnections = ref<Connection[]>([])
 export const closedConnections = ref<Connection[]>([])
@@ -69,6 +69,21 @@ export const initConnections = () => {
         }
       }) ?? []
   })
+
+  if (autoDisconnectIdleUDP.value) {
+    watchOnce(activeConnections, () => {
+      activeConnections.value
+        .filter((conn) => conn.metadata.network !== 'tcp')
+        .forEach((conn) => {
+          const now = dayjs()
+          const start = dayjs(conn.start)
+
+          if (now.diff(start, 'minute') > autoDisconnectIdleUDPTime.value) {
+            disconnectByIdAPI(conn.id)
+          }
+        })
+    })
+  }
 
   cancel = () => {
     unwatch()

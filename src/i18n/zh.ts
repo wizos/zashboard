@@ -199,6 +199,10 @@ const zh: LANG_MESSAGE = {
   OccasionalUsed: '偶尔使用',
   MostUsed: '经常使用',
   all: '全部',
+  autoDisconnectIdleUDP: '自动断开空闲UDP',
+  autoDisconnectIdleUDPTime: 'UDP空闲时间',
+  autoDisconnectIdleUDPTip:
+    '启用后，打开zashboard时将关闭持续时间超过配置分钟数的UDP连接，这可能对某些无法正常自动断开的UDP连接带来帮助。',
 }
 
 export default zh

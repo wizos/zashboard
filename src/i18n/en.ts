@@ -200,6 +200,10 @@ const en = {
   OccasionalUsed: 'Occasional Used',
   MostUsed: 'Most Used',
   all: 'All',
+  autoDisconnectIdleUDP: 'Auto Disconnect Idle UDP',
+  autoDisconnectIdleUDPTime: 'UDP Idle Time',
+  autoDisconnectIdleUDPTip:
+    'When enabled, opening the zashboard will close UDP connections that have been active for longer than the configured number of minutes. This may help with certain UDP connections that do not disconnect automatically as expected.',
 }
 
 export type LANG_MESSAGE = typeof en

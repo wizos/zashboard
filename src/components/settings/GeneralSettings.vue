@@ -7,6 +7,30 @@
     <div class="card-body gap-4">
       <div class="grid grid-cols-1 gap-2 lg:grid-cols-2">
         <div class="flex items-center gap-2">
+          {{ $t('autoDisconnectIdleUDP') }}
+          <input
+            type="checkbox"
+            v-model="autoDisconnectIdleUDP"
+            class="toggle"
+          />
+          <QuestionMarkCircleIcon
+            class="h-4 w-4 cursor-pointer"
+            @mouseenter="showTip($event, $t('autoDisconnectIdleUDPTip'))"
+          />
+        </div>
+        <div
+          class="flex items-center gap-2"
+          v-if="autoDisconnectIdleUDP"
+        >
+          {{ $t('autoDisconnectIdleUDPTime') }}
+          <input
+            type="number"
+            class="input input-sm w-20"
+            v-model="autoDisconnectIdleUDPTime"
+          />
+          mins
+        </div>
+        <div class="flex items-center gap-2">
           {{ $t('IPInfoAPI') }}
           <select
             class="select select-sm min-w-24"
@@ -25,6 +49,7 @@
             @mouseenter="showTip($event, $t('IPInfoAPITip'))"
           />
         </div>
+
         <div class="flex items-center gap-2 md:hidden">
           {{ $t('scrollAnimationEffect') }}
           <input
@@ -89,6 +114,8 @@ import { isSingBox } from '@/api'
 import { IP_INFO_API } from '@/constant'
 import { useTooltip } from '@/helper/tooltip'
 import {
+  autoDisconnectIdleUDP,
+  autoDisconnectIdleUDPTime,
   disablePullToRefresh,
   displayAllFeatures,
   IPInfoAPI,
