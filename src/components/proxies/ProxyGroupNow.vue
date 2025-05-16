@@ -7,7 +7,7 @@
     />
     <ArrowRightCircleIcon
       class="h-4 w-4 shrink-0"
-      v-else-if="icon"
+      v-else-if="!mobile"
     />
 
     <ProxyName
@@ -32,14 +32,14 @@ import ProxyName from './ProxyName.vue'
 
 const props = defineProps<{
   name: string
-  icon?: boolean
+  mobile?: boolean
 }>()
 const proxyGroup = computed(() => proxyMap.value[props.name])
 
 const { showTip } = useTooltip()
 const tipForNow = (e: Event) => {
   const nowNode = getNowProxyNodeName(props.name)
-  if (!nowNode || nowNode === proxyGroup.value.now) return
+  if (!nowNode || nowNode === proxyGroup.value.now || props.mobile) return
 
   showTip(e, nowNode, {
     delay: [500, 0],

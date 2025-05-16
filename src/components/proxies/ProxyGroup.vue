@@ -41,10 +41,7 @@
         @contextmenu.prevent.stop="handlerLatencyTest"
       >
         <div class="flex flex-1 items-center gap-1 text-sm">
-          <ProxyGroupNow
-            :name="name"
-            :icon="true"
-          />
+          <ProxyGroupNow :name="name" />
         </div>
         <div class="min-w-12 shrink-0 text-right text-xs">
           {{ prettyBytesHelper(downloadTotal) }}/s

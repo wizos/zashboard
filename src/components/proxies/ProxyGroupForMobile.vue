@@ -32,7 +32,10 @@
           {{ proxyGroup.name }}
         </div>
         <div class="text-base-content/80 flex gap-1 truncate text-xs">
-          <ProxyGroupNow :name="proxyGroup.name" />
+          <ProxyGroupNow
+            :name="proxyGroup.name"
+            :mobile="true"
+          />
         </div>
 
         <div class="flex h-4 items-center justify-between gap-1">
@@ -76,7 +79,7 @@
           :now="proxyGroup.now"
           :render-proxies="renderProxies"
           :show-full-content="true"
-          style="max-height: calc(50dvh - 5rem)"
+          style="max-height: unset !important"
         />
       </div>
     </div>
@@ -122,6 +125,7 @@ const cardSize = computed(() => {
   if (modalMode.value) {
     return {
       width: 'calc(100vw - 1rem)',
+      maxHeight: `calc(100vh - ${cardPosition.value.bottom || cardPosition.value.top} - 4rem)`,
     }
   }
   return {
