@@ -264,6 +264,10 @@ export const getUrlFromBackend = (end: Omit<Backend, 'uuid'>) => {
   return `${end.protocol}://${end.host}:${end.port}${end.secondaryPath || ''}`
 }
 
+export const getLabelFromBackend = (end: Omit<Backend, 'uuid'>) => {
+  return end.label || getUrlFromBackend(end)
+}
+
 export const getColorForLatency = (latency: number) => {
   if (latency === NOT_CONNECTED) {
     return ''

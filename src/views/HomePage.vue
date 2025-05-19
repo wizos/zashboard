@@ -92,7 +92,7 @@ import { rulesTabShow } from '@/composables/rules'
 import { useSettings } from '@/composables/settings'
 import { useSwipeRouter } from '@/composables/swipe'
 import { PROXY_TAB_TYPE, ROUTE_ICON_MAP, ROUTE_NAME, RULE_TAB_TYPE } from '@/constant'
-import { getUrlFromBackend, renderRoutes } from '@/helper'
+import { getLabelFromBackend, renderRoutes } from '@/helper'
 import { isMiddleScreen } from '@/helper/utils'
 import { fetchConfigs } from '@/store/config'
 import { initConnections } from '@/store/connections'
@@ -167,7 +167,7 @@ const autoSwitchBackend = async () => {
     showNotification({
       content: 'backendSwitchTo',
       params: {
-        backend: getUrlFromBackend(avaliable),
+        backend: getLabelFromBackend(avaliable),
       },
     })
   }

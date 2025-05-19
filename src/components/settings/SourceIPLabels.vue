@@ -82,7 +82,7 @@
                       "
                     />
                     <span>
-                      {{ getUrlFromBackend(backend) }}
+                      {{ getLabelFromBackend(backend) }}
                     </span>
                   </label>
                 </div>
@@ -145,7 +145,7 @@
             "
           />
           <span>
-            {{ getUrlFromBackend(backend) }}
+            {{ getLabelFromBackend(backend) }}
           </span>
         </label>
       </div>
@@ -168,7 +168,7 @@
 
 <script setup lang="ts">
 import { disableSwipe } from '@/composables/swipe'
-import { getUrlFromBackend } from '@/helper'
+import { getLabelFromBackend } from '@/helper'
 import { connections } from '@/store/connections'
 import { sourceIPLabelList } from '@/store/settings'
 import { backendList } from '@/store/setup'

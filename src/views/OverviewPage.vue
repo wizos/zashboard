@@ -5,7 +5,7 @@
     <ConnectionHistory />
     <div class="flex-1"></div>
     <div class="card items-center justify-center gap-2 p-2 sm:flex-row">
-      {{ getUrlFromBackend(activeBackend!) }}
+      {{ getLabelFromBackend(activeBackend!) }} :
       <BackendVersion />
     </div>
   </div>
@@ -17,6 +17,6 @@ import ChartsCard from '@/components/overview/ChartsCard.vue'
 import ConnectionHistory from '@/components/overview/ConnectionHistory.vue'
 import NetworkCard from '@/components/overview/NetworkCard.vue'
 
-import { getUrlFromBackend } from '@/helper'
+import { getLabelFromBackend } from '@/helper'
 import { activeBackend } from '@/store/setup'
 </script>
