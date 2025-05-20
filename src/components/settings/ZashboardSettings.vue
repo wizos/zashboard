@@ -43,18 +43,7 @@
         <div class="flex items-center gap-2">
           {{ $t('defaultTheme') }}
           <div class="join">
-            <select
-              class="select select-sm join-item w-48"
-              v-model="defaultTheme"
-            >
-              <option
-                v-for="opt in themes"
-                :key="opt"
-                :value="opt"
-              >
-                {{ opt }}
-              </option>
-            </select>
+            <ThemeSelector v-model:value="defaultTheme" />
             <button
               class="btn btn-sm join-item"
               @click="customThemeModal = !customThemeModal"
@@ -69,18 +58,7 @@
           v-if="autoTheme"
         >
           {{ $t('darkTheme') }}
-          <select
-            class="select select-sm w-48"
-            v-model="darkTheme"
-          >
-            <option
-              v-for="opt in themes"
-              :key="opt"
-              :value="opt"
-            >
-              {{ opt }}
-            </option>
-          </select>
+          <ThemeSelector v-model:value="darkTheme" />
         </div>
         <div class="flex items-center gap-2">
           {{ $t('fonts') }}
@@ -189,7 +167,7 @@
 import { isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
-import { ALL_THEME, FONTS } from '@/constant'
+import { FONTS } from '@/constant'
 import { exportSettings, handlerUpgradeSuccess } from '@/helper'
 import {
   deleteBase64FromIndexedDB,
@@ -202,7 +180,6 @@ import {
   autoUpgrade,
   blurIntensity,
   customBackgroundURL,
-  customThemes,
   darkTheme,
   dashboardTransparent,
   defaultTheme,
@@ -211,10 +188,11 @@ import {
 } from '@/store/settings'
 import { ArrowPathIcon, ArrowUpCircleIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import ImportSettings from '../common/ImportSettings.vue'
 import TextInput from '../common/TextInput.vue'
 import CustomTheme from './CustomTheme.vue'
+import ThemeSelector from './ThemeSelector.vue'
 
 const customThemeModal = ref(false)
 const inputFileRef = ref()
@@ -255,14 +233,6 @@ const handlerClickUpgradeUI = async () => {
     isUIUpgrading.value = false
   }
 }
-
-const themes = computed(() => {
-  if (customThemes.value.length) {
-    return [...ALL_THEME, ...customThemes.value.map((theme) => theme.name)]
-  }
-
-  return ALL_THEME
-})
 
 const refreshPages = async () => {
   const registrations = await navigator.serviceWorker.getRegistrations()
