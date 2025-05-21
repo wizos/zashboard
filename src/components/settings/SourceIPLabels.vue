@@ -88,30 +88,31 @@ import {
 } from '@heroicons/vue/24/outline'
 import { useSessionStorage } from '@vueuse/core'
 import { v4 as uuid } from 'uuid'
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import Draggable from 'vuedraggable'
 import SourceIPInput from './SourceIPInput.vue'
 
 const dialogVisible = useSessionStorage('cache/sourceip-label-dialog-visible', false)
-const newLabelForIP = reactive<Omit<SourceIPLabel, 'id'>>({
+const newLabelForIP = ref<Omit<SourceIPLabel, 'id'>>({
   key: '',
   label: '',
 })
 
 const handlerLabelAdd = () => {
-  if (!newLabelForIP.key || !newLabelForIP.label) {
+  if (!newLabelForIP.value.key || !newLabelForIP.value.label) {
     return
   }
 
   dialogVisible.value = true
   sourceIPLabelList.value.push({
-    ...newLabelForIP,
+    ...newLabelForIP.value,
     id: uuid(),
   })
 
-  newLabelForIP.key = ''
-  newLabelForIP.label = ''
-  delete newLabelForIP.scope
+  newLabelForIP.value = {
+    key: '',
+    label: '',
+  }
 }
 
 const handlerLabelRemove = (id: string) => {
