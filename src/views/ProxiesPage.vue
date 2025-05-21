@@ -39,6 +39,7 @@ import ProxyGroupForMobile from '@/components/proxies/ProxyGroupForMobile.vue'
 import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
 import { useProxies } from '@/composables/proxies'
 import { PROXY_TAB_TYPE } from '@/constant'
+import { isMiddleScreen } from '@/helper/utils'
 import { fetchProxies } from '@/store/proxies'
 import { twoColumnProxyGroup } from '@/store/settings'
 import { useElementSize } from '@vueuse/core'
@@ -49,7 +50,7 @@ const proxiesRef = ref()
 const { width } = useElementSize(proxiesRef)
 
 const isSmallScreen = computed(() => {
-  return width.value < 640
+  return width.value < 640 && isMiddleScreen.value
 })
 const isWidthEnough = computed(() => {
   return width.value > 720
