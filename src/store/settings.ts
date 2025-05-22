@@ -2,6 +2,7 @@ import {
   CONNECTIONS_TABLE_ACCESSOR_KEY,
   DETAILED_CARD_STYLE,
   FONTS,
+  GLOBAL,
   IP_INFO_API,
   LANG,
   PROXY_CARD_SIZE,
@@ -133,6 +134,7 @@ export const minProxyCardWidth = useStorage<number>(
 export const manageHiddenGroup = useStorage('config/manage-hidden-group-mode', false)
 
 export const displayGlobalByMode = useStorage('config/display-global-by-mode', false)
+export const customGlobalNode = useStorage('config/custom-global-node-name', GLOBAL)
 export const iconSize = useStorage('config/icon-size', 14)
 export const iconMarginRight = useStorage('config/icon-margin-right', 6)
 export const proxyCountMode = useStorage('config/proxies-count-mode', PROXY_COUNT_MODE.ALIVE_TOTAL)

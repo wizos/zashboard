@@ -173,7 +173,7 @@ const calcCardStyle = () => {
 
   cardStyle.value = {
     width: 'calc(100vw - 1rem)',
-    maxHeight: `calc(100dvh - ${Math.max(safeArea, verticalOffset)}px - 6rem)`,
+    maxHeight: `calc(100dvh - ${Math.max(safeArea, verticalOffset)}px - 8rem)`,
     [leftRightKey]: 0,
     [topBottomKey]: topBottomValue + 'px',
     zIndex: 50,

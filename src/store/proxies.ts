@@ -9,7 +9,7 @@ import {
   selectProxyAPI,
 } from '@/api'
 import { useNotification } from '@/composables/notification'
-import { IPV6_TEST_URL, NOT_CONNECTED, PROXY_TYPE, TEST_URL } from '@/constant'
+import { GLOBAL, IPV6_TEST_URL, NOT_CONNECTED, PROXY_TYPE, TEST_URL } from '@/constant'
 import { isProxyGroup } from '@/helper'
 import type { Proxy, ProxyProvider } from '@/types'
 import { useStorage } from '@vueuse/core'
@@ -26,7 +26,6 @@ import {
   speedtestUrl,
 } from './settings'
 
-export const GLOBAL = 'GLOBAL'
 export const proxyGroupList = ref<string[]>([])
 export const proxyMap = ref<Record<string, Proxy>>({})
 export const IPv6Map = useStorage<Record<string, boolean>>('config/ipv6-map', {})

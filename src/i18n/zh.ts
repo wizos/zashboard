@@ -203,6 +203,7 @@ const zh: LANG_MESSAGE = {
   autoDisconnectIdleUDPTime: 'UDP空闲时间',
   autoDisconnectIdleUDPTip:
     '启用后，打开zashboard时将关闭持续时间超过配置分钟数的UDP连接，这可能对某些无法正常自动断开的UDP连接带来帮助。(这是作者自己的私货，你大概率不需要打开它)',
+  customGlobalNode: '自定义全局节点',
 }
 
 export default zh
