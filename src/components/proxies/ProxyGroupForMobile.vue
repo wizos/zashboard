@@ -11,7 +11,7 @@
       class="fixed inset-0 z-40 overflow-hidden bg-black/30 transition-all duration-300"
     ></div>
     <div
-      class="card absolute overflow-hidden transition-[height,width,left,top,right,bottom] duration-200 will-change-[height,width,left,top,right,bottom]"
+      class="card absolute overflow-hidden transition-[max-height,width,transform] duration-250 ease-in-out will-change-[max-height,width,transform]"
       :class="blurIntensity < 5 && 'backdrop-blur-sm!'"
       :style="cardStyle"
       @contextmenu.prevent.stop="handlerLatencyTest"
@@ -70,7 +70,7 @@
       </div>
 
       <div
-        v-if="modalMode"
+        v-if="displayContent"
         class="overflow-x-hidden overflow-y-auto overscroll-contain p-2"
         style="width: calc(100vw - 1rem)"
         ref="cardContentRef"
@@ -114,6 +114,7 @@ const { proxiesCount, renderProxies } = useRenderProxies(allProxies, props.name)
 const isLatencyTesting = ref(false)
 
 const modalMode = ref(false)
+const displayContent = ref(false)
 const showAllContent = ref(modalMode.value)
 
 const cardWrapperRef = ref()
@@ -123,7 +124,7 @@ const overflowY = ref(false)
 
 const INIT_STYLE = {
   width: '100%',
-  height: '100%',
+  maxHeight: '100%',
   top: 0,
   left: 0,
   right: 0,
@@ -136,65 +137,89 @@ const cardStyle = ref<Record<string, string | number>>({
 const calcCardStyle = () => {
   if (!cardWrapperRef.value) return
   if (!modalMode.value) {
-    const style: Record<string, string | number> = {
+    cardStyle.value = {
+      ...cardStyle.value,
       width: '100%',
-      height: '100%',
-      zIndex: 50,
+      maxHeight: '100%',
+      transform: 'translateY(0)',
+      transition:
+        'width 0.25s ease-in-out,transform 0.25s ease-in-out,max-height 0.18s ease-in-out!important',
     }
-
-    ;['top', 'left', 'right', 'bottom'].forEach((key) => {
-      if (Reflect.has(cardStyle.value, key)) {
-        style[key] = 0
-      }
-    })
-
-    cardStyle.value = style
     return
   }
+  const manyProxies = renderProxies.value.length > 4
 
-  const { x, y, height, bottom, top } = cardWrapperRef.value.getBoundingClientRect()
+  const { left, top, bottom } = cardWrapperRef.value.getBoundingClientRect()
   const { innerHeight, innerWidth } = window
-  const safeArea = innerHeight * 0.15
-  const leftRightKey = x < innerWidth / 3 ? 'left' : 'right'
-  const topBottomKey = y + height / 2 < innerHeight / 2 ? 'top' : 'bottom'
 
-  const verticalOffset = topBottomKey === 'top' ? top : innerHeight - bottom
-  let topBottomValue = 0
+  const minSafeArea = innerHeight * 0.15
+  const baseLine = innerHeight * 0.2
+  const maxSafeArea = innerHeight * 0.3
 
-  if (topBottomKey === 'top') {
-    if (y < safeArea) {
-      topBottomValue = safeArea - y
+  const isLeft = left < innerWidth / 3
+  const isTop = (top + bottom) * 0.5 < innerHeight * (manyProxies ? 0.7 : 0.5)
+  const transformOrigin = isLeft
+    ? isTop
+      ? 'top left'
+      : 'bottom left'
+    : isTop
+      ? 'top right'
+      : 'bottom right'
+  const positionKeyX = isLeft ? 'left' : 'right'
+  const positionKeyY = isTop ? 'top' : 'bottom'
+
+  let transformValueY = 0
+  let verticalOffset = 0
+
+  if (isTop) {
+    if (top < minSafeArea || (top > maxSafeArea && manyProxies)) {
+      transformValueY = baseLine - top
     }
+    verticalOffset = top + transformValueY
   } else {
-    if (y + height > innerHeight - safeArea) {
-      topBottomValue = y + height - (innerHeight - safeArea)
+    const minSafeBottom = innerHeight - minSafeArea
+    const maxSafeBottom = innerHeight - maxSafeArea
+    const baseLineBottom = innerHeight - baseLine
+
+    if (bottom > minSafeBottom || (bottom < maxSafeBottom && manyProxies)) {
+      transformValueY = baseLineBottom - bottom
     }
+    verticalOffset = innerHeight - bottom - transformValueY
   }
 
   cardStyle.value = {
     width: 'calc(100vw - 1rem)',
-    maxHeight: `calc(100dvh - ${Math.max(safeArea, verticalOffset)}px - 8rem)`,
-    [leftRightKey]: 0,
-    [topBottomKey]: topBottomValue + 'px',
+    maxHeight: `calc(100dvh - ${verticalOffset}px - 7rem)`,
+    transform: `translateY(${transformValueY}px)`,
+    transformOrigin,
     zIndex: 50,
+    [positionKeyY]: 0,
+    [positionKeyX]: 0,
   }
 }
 
-const handlerTransitionEnd = () => {
+const handlerTransitionEnd = (e: TransitionEvent) => {
+  if (e.propertyName !== 'width') return
   showAllContent.value = modalMode.value
   if (!modalMode.value) {
     cardStyle.value = {
       ...INIT_STYLE,
     }
-  } else {
-    nextTick(() => {
-      overflowY.value = cardContentRef.value.scrollHeight > cardContentRef.value.clientHeight
-    })
+    displayContent.value = false
+    return
   }
+
+  nextTick(() => {
+    if (!cardContentRef.value) return
+    overflowY.value = cardContentRef.value.scrollHeight > cardContentRef.value.clientHeight
+  })
 }
 
 const handlerGroupClick = async () => {
   modalMode.value = !modalMode.value
+  if (modalMode.value) {
+    displayContent.value = true
+  }
   calcCardStyle()
 }
 
