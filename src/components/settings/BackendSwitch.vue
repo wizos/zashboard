@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { ROUTE_NAME } from '@/constant'
-import { getLabelFromBackend } from '@/helper'
+import { getLabelFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { activeUuid, backendList } from '@/store/setup'
 import { PlusIcon } from '@heroicons/vue/24/outline'

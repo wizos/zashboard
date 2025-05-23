@@ -2,12 +2,10 @@ import { isSingBox } from '@/api'
 import { GLOBAL, PROXY_TAB_TYPE } from '@/constant'
 import { isHiddenGroup } from '@/helper'
 import { configs } from '@/store/config'
-import { proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
+import { proxiesTabShow, proxyGroupList, proxyMap, proxyProviederList } from '@/store/proxies'
 import { customGlobalNode, displayGlobalByMode, manageHiddenGroup } from '@/store/settings'
 import { isEmpty } from 'lodash'
-import { computed, ref } from 'vue'
-
-export const proxiesFilter = ref('')
+import { computed } from 'vue'
 
 const filterGroups = (all: string[]) => {
   if (manageHiddenGroup.value) {
@@ -16,8 +14,8 @@ const filterGroups = (all: string[]) => {
 
   return all.filter((name) => !isHiddenGroup(name))
 }
-const proxiesTabShow = ref(PROXY_TAB_TYPE.PROXIES)
-const renderGroups = computed(() => {
+
+export const renderGroups = computed(() => {
   if (isEmpty(proxyMap.value)) {
     return []
   }
@@ -38,10 +36,3 @@ const renderGroups = computed(() => {
 
   return filterGroups([...proxyGroupList.value, GLOBAL])
 })
-
-export const useProxies = () => {
-  return {
-    proxiesTabShow,
-    renderGroups,
-  }
-}

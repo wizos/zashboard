@@ -78,8 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import { getLabelFromBackend } from '@/helper'
 import { checkTruncation } from '@/helper/tooltip'
+import { getLabelFromBackend } from '@/helper/utils'
 import { connections } from '@/store/connections'
 import { sourceIPLabelList } from '@/store/settings'
 import { backendList } from '@/store/setup'

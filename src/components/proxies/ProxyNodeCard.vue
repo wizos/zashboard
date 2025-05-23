@@ -116,7 +116,7 @@ onMounted(() => {
   if (props.active) {
     setTimeout(() => {
       scrollIntoCenter(cardRef.value)
-    }, 500)
+    }, 300)
   }
 })
 </script>

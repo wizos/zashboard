@@ -16,7 +16,6 @@ import BackendVersion from '@/components/common/BackendVersion.vue'
 import ChartsCard from '@/components/overview/ChartsCard.vue'
 import ConnectionHistory from '@/components/overview/ConnectionHistory.vue'
 import NetworkCard from '@/components/overview/NetworkCard.vue'
-
-import { getLabelFromBackend } from '@/helper'
+import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend } from '@/store/setup'
 </script>

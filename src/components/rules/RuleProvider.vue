@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { updateRuleProviderAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
-import { fromNow } from '@/helper'
+import { fromNow } from '@/helper/utils'
 import { fetchRules } from '@/store/rules'
 import type { RuleProvider } from '@/types'
 import { ArrowPathIcon } from '@heroicons/vue/24/outline'

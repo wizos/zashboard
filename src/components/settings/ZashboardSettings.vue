@@ -168,13 +168,9 @@ import { isSingBox, upgradeUIAPI, zashboardVersion } from '@/api'
 import LanguageSelect from '@/components/settings/LanguageSelect.vue'
 import { useSettings } from '@/composables/settings'
 import { FONTS } from '@/constant'
-import { exportSettings, handlerUpgradeSuccess } from '@/helper'
-import {
-  deleteBase64FromIndexedDB,
-  isPWA,
-  LOCAL_IMAGE,
-  saveBase64ToIndexedDB,
-} from '@/helper/utils'
+import { handlerUpgradeSuccess } from '@/helper'
+import { deleteBase64FromIndexedDB, LOCAL_IMAGE, saveBase64ToIndexedDB } from '@/helper/indexeddb'
+import { exportSettings, isPWA } from '@/helper/utils'
 import {
   autoTheme,
   autoUpgrade,

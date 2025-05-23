@@ -12,7 +12,7 @@
         >
           <component
             v-for="name in filterContent(renderGroups, idx)"
-            :is="Comp"
+            :is="renderComponent"
             :key="name"
             :name="name"
           />
@@ -25,7 +25,7 @@
     >
       <component
         v-for="name in renderGroups"
-        :is="Comp"
+        :is="renderComponent"
         :key="name"
         :name="name"
       />
@@ -37,15 +37,14 @@
 import ProxyGroup from '@/components/proxies/ProxyGroup.vue'
 import ProxyGroupForMobile from '@/components/proxies/ProxyGroupForMobile.vue'
 import ProxyProvider from '@/components/proxies/ProxyProvider.vue'
-import { useProxies } from '@/composables/proxies'
+import { renderGroups } from '@/composables/proxies'
 import { PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
-import { fetchProxies } from '@/store/proxies'
+import { fetchProxies, proxiesTabShow } from '@/store/proxies'
 import { twoColumnProxyGroup } from '@/store/settings'
 import { useElementSize } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
-const { proxiesTabShow, renderGroups } = useProxies()
 const proxiesRef = ref()
 const { width } = useElementSize(proxiesRef)
 
@@ -56,20 +55,24 @@ const isWidthEnough = computed(() => {
   return width.value > 720
 })
 
-const Comp = computed(() => {
+const renderComponent = computed(() => {
   if (proxiesTabShow.value === PROXY_TAB_TYPE.PROVIDER) {
     return ProxyProvider
   }
 
-  return isSmallScreen.value && displayTwoColumns.value ? ProxyGroupForMobile : ProxyGroup
+  if (isSmallScreen.value && displayTwoColumns.value) {
+    return ProxyGroupForMobile
+  }
+
+  return ProxyGroup
 })
 
 const displayTwoColumns = computed(() => {
+  if (renderGroups.value.length < 2 || !twoColumnProxyGroup.value) {
+    return false
+  }
   return (
-    (isWidthEnough.value ||
-      (isSmallScreen.value && proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES)) &&
-    twoColumnProxyGroup.value &&
-    renderGroups.value.length > 1
+    isWidthEnough.value || (isSmallScreen.value && proxiesTabShow.value === PROXY_TAB_TYPE.PROXIES)
   )
 })
 

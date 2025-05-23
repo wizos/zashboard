@@ -1,6 +1,6 @@
 import { useNotification } from '@/composables/notification'
 import { ROUTE_NAME } from '@/constant'
-import { getUrlFromBackend } from '@/helper'
+import { getUrlFromBackend } from '@/helper/utils'
 import router from '@/router'
 import { autoUpgradeCore, checkUpgradeCore } from '@/store/settings'
 import { activeBackend, activeUuid, removeBackend } from '@/store/setup'

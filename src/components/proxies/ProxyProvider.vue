@@ -65,7 +65,7 @@
 import { proxyProviderHealthCheckAPI, updateProxyProviderAPI } from '@/api'
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
-import { fromNow, prettyBytesHelper } from '@/helper'
+import { fromNow, prettyBytesHelper } from '@/helper/utils'
 import { fetchProxies, proxyProviederList } from '@/store/proxies'
 import { twoColumnProxyGroup } from '@/store/settings'
 import { ArrowPathIcon, BoltIcon } from '@heroicons/vue/24/outline'
