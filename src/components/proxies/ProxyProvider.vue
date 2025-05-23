@@ -54,6 +54,7 @@
             : renderProxies.slice(0, twoColumnProxyGroup ? 48 : 96)"
           :key="node"
           :name="node"
+          :group-name="name"
         />
       </ProxyNodeGrid>
     </template>

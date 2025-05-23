@@ -35,17 +35,14 @@ export const proxyProviederList = ref<ProxyProvider[]>([])
 export const getTestUrl = (groupName?: string) => {
   const defaultUrl = speedtestUrl.value || TEST_URL
 
-  if (!groupName) {
+  if (!groupName || !independentLatencyTest.value) {
     return defaultUrl
   }
 
-  const proxyNode = proxyMap.value[groupName]
+  const proxyNode =
+    proxyMap.value[groupName] || proxyProviederList.value.find((p) => p.name === groupName)
 
-  if (independentLatencyTest.value && proxyNode.testUrl) {
-    return proxyNode.testUrl
-  }
-
-  return defaultUrl
+  return proxyNode?.testUrl || defaultUrl
 }
 
 export const getLatencyByName = (proxyName: string, groupName?: string) => {
