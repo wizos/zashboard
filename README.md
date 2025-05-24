@@ -1,6 +1,9 @@
 # zashboard
 
-<img src="pc.png" height="350">   <img src="mobile.png" height="350">
+<p align="center">
+  <img src="./readme/pc.png" height="300">
+  <img src="./readme/mobile.png" height="300">
+</p>
 
 ## **Requirement**
 Browser support

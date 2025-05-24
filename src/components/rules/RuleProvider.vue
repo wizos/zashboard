@@ -1,5 +1,5 @@
 <template>
-  <div class="card w-full gap-2 p-2 text-sm">
+  <div class="card hover:bg-base-200 w-full gap-2 p-2 text-sm">
     <div class="flex flex-1 items-center gap-2">
       <span>{{ index }}.</span>
       <span class="text-main">{{ ruleProvider.name }}</span>

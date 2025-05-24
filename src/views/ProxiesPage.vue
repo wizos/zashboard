@@ -2,6 +2,7 @@
   <div
     class="max-sm:scrollbar-hidden h-full overflow-y-scroll p-2 sm:pr-1"
     ref="proxiesRef"
+    @scroll.passive="handleScroll"
   >
     <template v-if="displayTwoColumns">
       <div class="grid grid-cols-2 gap-1">
@@ -42,11 +43,44 @@ import { PROXY_TAB_TYPE } from '@/constant'
 import { isMiddleScreen } from '@/helper/utils'
 import { fetchProxies, proxiesTabShow } from '@/store/proxies'
 import { twoColumnProxyGroup } from '@/store/settings'
-import { useElementSize } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { useElementSize, useSessionStorage } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const proxiesRef = ref()
 const { width } = useElementSize(proxiesRef)
+const scrollStatus = useSessionStorage('cache/proxies-scroll-status', {
+  [PROXY_TAB_TYPE.PROVIDER]: 0,
+  [PROXY_TAB_TYPE.PROXIES]: 0,
+})
+
+const handleScroll = () => {
+  scrollStatus.value[proxiesTabShow.value] = proxiesRef.value.scrollTop
+}
+
+const waitTickUntilReady = (startTime = performance.now()) => {
+  if (
+    performance.now() - startTime > 300 ||
+    proxiesRef.value.scrollHeight > scrollStatus.value[proxiesTabShow.value]
+  ) {
+    proxiesRef.value.scrollTop = scrollStatus.value[proxiesTabShow.value]
+  } else {
+    requestAnimationFrame(() => {
+      waitTickUntilReady(startTime)
+    })
+  }
+}
+
+onMounted(() => {
+  watch(
+    proxiesTabShow,
+    () => {
+      waitTickUntilReady()
+    },
+    {
+      immediate: true,
+    },
+  )
+})
 
 const isSmallScreen = computed(() => {
   return width.value < 640 && isMiddleScreen.value
