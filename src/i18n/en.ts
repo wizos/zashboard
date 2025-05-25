@@ -115,7 +115,7 @@ const en = {
   globalIP: 'Global IP',
   networkInfo: 'Network Info',
   autoSwitchTheme: 'Auto Switch Theme',
-  customBackgroundURL: 'Background URL',
+  customBackgroundURL: 'Background',
   splitOverviewPage: 'Split Overview Page',
   manageHiddenGroup: 'Manage Hidden Groups',
   showIPAndConnectionInfo: 'Display IP and Connection Info',

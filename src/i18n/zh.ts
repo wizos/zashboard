@@ -116,7 +116,7 @@ const zh: LANG_MESSAGE = {
   globalIP: '全球节点 IP',
   networkInfo: '网络信息',
   autoSwitchTheme: '自动切换主题',
-  customBackgroundURL: '背景 URL',
+  customBackgroundURL: '面板背景',
   splitOverviewPage: '分离概览页',
   manageHiddenGroup: '管理隐藏代理组',
   showIPAndConnectionInfo: '显示 IP 和连接信息',

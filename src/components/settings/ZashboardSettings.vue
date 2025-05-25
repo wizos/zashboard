@@ -77,9 +77,9 @@
         </div>
         <div class="flex items-center gap-2">
           <span class="shrink-0"> {{ $t('customBackgroundURL') }} </span>
-          <div class="join flex-1">
+          <div class="join">
             <TextInput
-              class="join-item w-48 max-w-64 flex-1"
+              class="join-item max-w-48 flex-1"
               v-model="customBackgroundURL"
               :clearable="true"
               @update:modelValue="handlerBackgroundURLChange"
@@ -88,9 +88,16 @@
               class="btn join-item btn-sm"
               @click="handlerClickUpload"
             >
-              <ArrowUpCircleIcon class="h-4 w-4" />
+              <ArrowUpTrayIcon class="h-4 w-4" />
             </button>
           </div>
+          <button
+            class="btn btn-circle join-item btn-sm"
+            v-if="customBackgroundURL"
+            @click="displayBgProperty = !displayBgProperty"
+          >
+            <AdjustmentsHorizontalIcon class="h-4 w-4" />
+          </button>
           <input
             ref="inputFileRef"
             type="file"
@@ -99,7 +106,7 @@
             @change="handlerFileChange"
           />
         </div>
-        <template v-if="customBackgroundURL">
+        <template v-if="customBackgroundURL && displayBgProperty">
           <div class="flex items-center gap-2">
             {{ $t('transparent') }}
             <input
@@ -182,7 +189,12 @@ import {
   displayAllFeatures,
   font,
 } from '@/store/settings'
-import { ArrowPathIcon, ArrowUpCircleIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import {
+  AdjustmentsHorizontalIcon,
+  ArrowPathIcon,
+  ArrowUpTrayIcon,
+  PlusIcon,
+} from '@heroicons/vue/24/outline'
 import { twMerge } from 'tailwind-merge'
 import { ref } from 'vue'
 import ImportSettings from '../common/ImportSettings.vue'
@@ -191,6 +203,7 @@ import CustomTheme from './CustomTheme.vue'
 import ThemeSelector from './ThemeSelector.vue'
 
 const customThemeModal = ref(false)
+const displayBgProperty = ref(false)
 const inputFileRef = ref()
 const handlerClickUpload = () => {
   inputFileRef.value?.click()
