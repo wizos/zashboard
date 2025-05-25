@@ -22,50 +22,18 @@
       placeholder="IP | eui64 | /Regex"
     />
     <div
-      class="dropdown"
       v-if="backendList.length > 1"
+      class="rounded-field bg-base-200 flex h-8 w-8 cursor-pointer items-center justify-center"
+      @click="bindBackendMenu"
     >
-      <div
-        tabindex="0"
-        role="button"
-        class="btn btn-sm"
-      >
-        <LockClosedIcon
-          v-if="sourceIPLabel.scope?.length && sourceIPLabel.scope.length < backendList.length"
-          class="h-4 w-4"
-        />
-        <LockOpenIcon
-          v-else
-          class="h-4 w-4"
-        />
-      </div>
-      <ul
-        tabindex="0"
-        class="dropdown-content menu card flex flex-col gap-2 shadow-2xl"
-      >
-        <div
-          v-for="backend in backendList"
-          :key="backend.uuid"
-        >
-          <label class="flex cursor-pointer items-center gap-2">
-            <input
-              type="checkbox"
-              class="checkbox checkbox-sm"
-              :checked="getScopeValueFromSouceIPByBackendID(backend.uuid, sourceIPLabel)"
-              @change="
-                (e: Event) => {
-                  const target = e.target as HTMLInputElement
-
-                  setScopeValueFromSouceIPByBackendID(backend.uuid, sourceIPLabel, target.checked)
-                }
-              "
-            />
-            <span>
-              {{ getLabelFromBackend(backend) }}
-            </span>
-          </label>
-        </div>
-      </ul>
+      <LockClosedIcon
+        v-if="isLocked"
+        class="h-4 w-4"
+      />
+      <LockOpenIcon
+        v-else
+        class="h-4 w-4"
+      />
     </div>
     <ArrowRightCircleIcon class="h-4 w-4 shrink-0" />
     <TextInput
@@ -78,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { checkTruncation } from '@/helper/tooltip'
+import { checkTruncation, useTooltip } from '@/helper/tooltip'
 import { getLabelFromBackend } from '@/helper/utils'
 import { connections } from '@/store/connections'
 import { sourceIPLabelList } from '@/store/settings'
@@ -106,7 +74,7 @@ const getScopeValueFromSouceIPByBackendID = (
   backendID: string,
   sourceIP: Partial<SourceIPLabel>,
 ) => {
-  return sourceIP.scope?.some((item) => item === backendID)
+  return sourceIP.scope?.some((item) => item === backendID) ?? false
 }
 
 const setScopeValueFromSouceIPByBackendID = (
@@ -125,5 +93,48 @@ const setScopeValueFromSouceIPByBackendID = (
       delete sourceIP.scope
     }
   }
+}
+
+const isLocked = computed(() => {
+  return (
+    sourceIPLabel.value.scope?.length && sourceIPLabel.value.scope.length < backendList.value.length
+  )
+})
+
+const { showTip } = useTooltip()
+const bindBackendMenu = (e: Event) => {
+  const backendListContent = document.createElement('div')
+
+  backendListContent.classList.add('flex', 'flex-col', 'gap-2', 'py-1')
+
+  for (const backend of backendList.value) {
+    const label = document.createElement('label')
+    const checkbox = document.createElement('input')
+    const span = document.createElement('span')
+
+    label.classList.add('flex', 'items-center', 'gap-2', 'cursor-pointer')
+
+    checkbox.type = 'checkbox'
+    checkbox.classList.add('checkbox', 'checkbox-sm')
+    checkbox.checked = getScopeValueFromSouceIPByBackendID(backend.uuid, sourceIPLabel.value)
+    checkbox.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement
+
+      setScopeValueFromSouceIPByBackendID(backend.uuid, sourceIPLabel.value, target.checked)
+    })
+
+    span.textContent = getLabelFromBackend(backend)
+    label.append(checkbox, span)
+    backendListContent.append(label)
+  }
+
+  showTip(e, backendListContent, {
+    theme: 'base',
+    placement: 'bottom-start',
+    trigger: 'click',
+    appendTo: document.body,
+    interactive: true,
+    arrow: false,
+  })
 }
 </script>
