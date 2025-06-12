@@ -29,7 +29,12 @@
               :key="header.id"
               :colSpan="header.colSpan"
               class="relative"
-              :class="header.column.getCanSort() ? 'cursor-pointer select-none' : ''"
+              :class="[
+                header.column.getCanSort() ? 'cursor-pointer select-none' : '',
+                header.column.getIsPinned && header.column.getIsPinned() === 'left'
+                  ? 'bg-base-100 sticky -left-2 z-20'
+                  : '',
+              ]"
               :style="
                 isManualTable && {
                   width: `${header.getSize()}px`,
@@ -38,20 +43,6 @@
               @click="header.column.getToggleSortingHandler()?.($event)"
             >
               <div class="flex items-center gap-1">
-                <button
-                  v-if="header.column.getCanGroup()"
-                  class="cursor-pointer"
-                  @click.stop="() => header.column.getToggleGroupingHandler()()"
-                >
-                  <MagnifyingGlassMinusIcon
-                    v-if="header.column.getIsGrouped()"
-                    class="h-4 w-4"
-                  />
-                  <MagnifyingGlassPlusIcon
-                    v-else
-                    class="h-4 w-4"
-                  />
-                </button>
                 <FlexRender
                   v-if="!header.isPlaceholder"
                   :render="header.column.columnDef.header"
@@ -66,6 +57,39 @@
                   class="h-4 w-4"
                   v-if="header.column.getIsSorted() === 'desc'"
                 />
+                <div>
+                  <button
+                    v-if="header.column.getCanGroup()"
+                    class="btn btn-xs btn-circle btn-ghost"
+                    @click.stop="() => header.column.getToggleGroupingHandler()()"
+                  >
+                    <MagnifyingGlassMinusIcon
+                      v-if="header.column.getIsGrouped()"
+                      class="h-4 w-4"
+                    />
+                    <MagnifyingGlassPlusIcon
+                      v-else
+                      class="h-4 w-4"
+                    />
+                  </button>
+                  <button
+                    v-if="
+                      header.column.id === CONNECTIONS_TABLE_ACCESSOR_KEY.Host ||
+                      header.column.id === CONNECTIONS_TABLE_ACCESSOR_KEY.SniffHost
+                    "
+                    class="btn btn-xs btn-circle btn-ghost"
+                    @click.stop="() => handlePinColumn(header.column)"
+                  >
+                    <MapPinIcon
+                      v-if="header.column.getIsPinned() !== 'left'"
+                      class="h-4 w-4"
+                    />
+                    <XMarkIcon
+                      v-else
+                      class="h-4 w-4"
+                    />
+                  </button>
+                </div>
               </div>
               <div
                 v-if="isManualTable"
@@ -110,6 +134,9 @@
                       ].includes(cell.column.id as CONNECTIONS_TABLE_ACCESSOR_KEY) &&
                         'max-w-xl truncate',
                     ),
+                cell.column.getIsPinned && cell.column.getIsPinned() === 'left'
+                  ? 'sticky -left-2 z-20 bg-inherit shadow-md backdrop-blur-md'
+                  : '',
               ]"
             >
               <template v-if="cell.column.getIsGrouped()">
@@ -182,6 +209,7 @@ import {
   ArrowUpCircleIcon,
   MagnifyingGlassMinusIcon,
   MagnifyingGlassPlusIcon,
+  MapPinIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import {
@@ -192,7 +220,9 @@ import {
   getSortedRowModel,
   isFunction,
   useVueTable,
+  type Column,
   type ColumnDef,
+  type ColumnPinningState,
   type ExpandedState,
   type GroupingState,
   type Row,
@@ -384,6 +414,10 @@ const columns: ColumnDef<Connection>[] = [
 const grouping = ref<GroupingState>([])
 const expanded = ref<ExpandedState>({})
 const sorting = useStorage<SortingState>('config/table-sorting', [])
+const columnPinning = useStorage<ColumnPinningState>('config/table-column-pinning', {
+  left: [],
+  right: [],
+})
 
 const tanstackTable = useVueTable({
   get data() {
@@ -416,6 +450,9 @@ const tanstackTable = useVueTable({
     get columnSizing() {
       return columnWidthMap.value
     },
+    get columnPinning() {
+      return columnPinning.value
+    },
   },
   onGroupingChange: (updater) => {
     if (isFunction(updater)) {
@@ -444,6 +481,13 @@ const tanstackTable = useVueTable({
       >
     } else {
       columnWidthMap.value = updater as Record<CONNECTIONS_TABLE_ACCESSOR_KEY, number>
+    }
+  },
+  onColumnPinningChange: (updater) => {
+    if (isFunction(updater)) {
+      columnPinning.value = updater(columnPinning.value)
+    } else {
+      columnPinning.value = updater
     }
   },
   getSortedRowModel: getSortedRowModel(),
@@ -485,6 +529,24 @@ const handlerClickRow = (row: Row<Connection>) => {
     }
   } else {
     handlerInfo(row.original)
+  }
+}
+
+const handlePinColumn = (column: Column<Connection, unknown>) => {
+  if (column.getIsPinned() === 'left') {
+    column.pin(false)
+  } else {
+    const currentPinning = columnPinning.value.left || []
+
+    currentPinning.forEach((pinnedColumnId: string) => {
+      if (pinnedColumnId !== column.id) {
+        const pinnedColumn = tanstackTable.getColumn(pinnedColumnId)
+        if (pinnedColumn) {
+          pinnedColumn.pin(false)
+        }
+      }
+    })
+    column.pin('left')
   }
 }
 </script>

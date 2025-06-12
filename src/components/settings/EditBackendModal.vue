@@ -40,9 +40,9 @@
 
         <div class="flex flex-col gap-1">
           <label class="text-sm">{{ t('host') }}</label>
-          <input
-            type="text"
-            class="input input-sm w-full"
+          <TextInput
+            class="w-full"
+            name="username"
             v-model="editForm.host"
             placeholder="127.0.0.1"
           />
@@ -50,19 +50,17 @@
 
         <div class="flex flex-col gap-1">
           <label class="text-sm">{{ t('port') }}</label>
-          <input
-            type="text"
-            class="input input-sm w-full"
+          <TextInput
+            class="w-full"
             v-model="editForm.port"
             placeholder="9090"
           />
         </div>
 
         <div class="flex flex-col gap-1">
-          <label class="text-sm">{{ t('secondaryPathOptional') }}</label>
-          <input
-            type="text"
-            class="input input-sm w-full"
+          <label class="text-sm">{{ $t('secondaryPath') }} ({{ $t('optional') }})</label>
+          <TextInput
+            class="w-full"
             v-model="editForm.secondaryPath"
             :placeholder="t('optional')"
           />
@@ -79,9 +77,8 @@
 
         <div class="flex flex-col gap-1">
           <label class="text-sm">{{ t('label') }} ({{ t('optional') }})</label>
-          <input
-            type="text"
-            class="input input-sm w-full"
+          <TextInput
+            class="w-full"
             v-model="editForm.label"
             :placeholder="t('label')"
           />
@@ -115,6 +112,7 @@
 <script setup lang="ts">
 import { isBackendAvailable } from '@/api'
 import DialogWrapper from '@/components/common/DialogWrapper.vue'
+import TextInput from '@/components/common/TextInput.vue'
 import { useNotification } from '@/composables/notification'
 import { getLabelFromBackend } from '@/helper/utils'
 import { activeBackend, backendList, updateBackend } from '@/store/setup'
@@ -194,13 +192,11 @@ const handleSave = async () => {
   isSaving.value = true
 
   try {
-    // 构建新的后端配置进行测试
     const testBackend: Backend = {
       uuid: selectedBackend.value.uuid,
       ...editForm.value,
     }
 
-    // 检查后端是否可用
     const isAvailable = await isBackendAvailable(testBackend, 10000)
 
     if (!isAvailable) {
@@ -211,7 +207,6 @@ const handleSave = async () => {
       return
     }
 
-    // 后端可用，保存配置
     updateBackend(selectedBackend.value.uuid, editForm.value)
     showNotification({
       content: t('backendConfigSaved'),

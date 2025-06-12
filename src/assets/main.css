@@ -57,9 +57,12 @@
 }
 
 @utility table {
-  & tr {
-    @apply border-b-0;
+  & tr,
+  & th,
+  & td {
+    @apply border-0;
   }
+  @apply border-separate border-spacing-0;
 }
 
 .select.select-sm,

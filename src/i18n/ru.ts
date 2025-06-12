@@ -217,7 +217,6 @@ const ru: LANG_MESSAGE = {
   backendConfigSaved: 'Конфигурация бэкенда успешно сохранена',
   saveFailed: 'Не удалось сохранить',
   checking: 'Проверка...',
-  secondaryPathOptional: 'Дополнительный путь (необязательно)',
 }
 
 export default ru
