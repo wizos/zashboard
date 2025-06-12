@@ -1,10 +1,19 @@
 <template>
   <div
     ref="parentRef"
-    class="h-full overflow-y-auto p-2"
+    class="h-full overflow-auto p-2"
+    :class="{
+      'cursor-grab': !isDragging,
+      'cursor-grabbing': isDragging,
+      'select-none': isDragging,
+    }"
     @touchstart.passive.stop
     @touchmove.passive.stop
     @touchend.passive.stop
+    @mousedown="handleMouseDown"
+    @mousemove="handleMouseMove"
+    @mouseup="handleMouseUp"
+    @mouseleave="handleMouseUp"
   >
     <div :style="{ height: `${totalSize}px` }">
       <table
@@ -523,6 +532,8 @@ const sizeOfTable = computed(() => {
 })
 
 const handlerClickRow = (row: Row<Connection>) => {
+  if (isDragging.value) return
+
   if (row.getIsGrouped()) {
     if (row.getCanExpand()) {
       row.getToggleExpandedHandler()()
@@ -548,6 +559,58 @@ const handlePinColumn = (column: Column<Connection, unknown>) => {
     })
     column.pin('left')
   }
+}
+
+const isDragging = ref(false)
+const isMouseDown = ref(false)
+const dragStartPos = ref({ x: 0, y: 0 })
+const dragStartScroll = ref({ x: 0, y: 0 })
+const DRAG_THRESHOLD = 5 // 最小拖动阈值
+
+const handleMouseDown = (e: MouseEvent) => {
+  if (e.button !== 0) return // 只处理左键
+  isMouseDown.value = true
+  dragStartPos.value = { x: e.clientX, y: e.clientY }
+
+  if (parentRef.value) {
+    dragStartScroll.value = {
+      x: parentRef.value.scrollLeft,
+      y: parentRef.value.scrollTop,
+    }
+  }
+
+  e.preventDefault()
+}
+
+const handleMouseMove = (e: MouseEvent) => {
+  if (!isMouseDown.value || !parentRef.value) return
+
+  const deltaX = e.clientX - dragStartPos.value.x
+  const deltaY = e.clientY - dragStartPos.value.y
+
+  // 检查是否超过拖动阈值
+  if (
+    !isDragging.value &&
+    (Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD)
+  ) {
+    isDragging.value = true
+  }
+
+  if (isDragging.value) {
+    parentRef.value.scrollLeft = dragStartScroll.value.x - deltaX
+    parentRef.value.scrollTop = dragStartScroll.value.y - deltaY
+    e.preventDefault()
+  }
+}
+
+const handleMouseUp = () => {
+  // 延迟重置拖动状态，以防止在拖动结束后立即触发点击事件
+  if (isDragging.value) {
+    setTimeout(() => {
+      isDragging.value = false
+    }, 100)
+  }
+  isMouseDown.value = false
 }
 </script>
 
