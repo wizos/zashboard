@@ -215,6 +215,7 @@ const en = {
   backendConfigSaved: 'Backend configuration saved successfully',
   saveFailed: 'Save failed',
   checking: 'Checking...',
+  copySuccess: 'Copy Success',
 }
 
 export type LANG_MESSAGE = typeof en

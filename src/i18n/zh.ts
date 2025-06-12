@@ -214,6 +214,7 @@ const zh: LANG_MESSAGE = {
   backendConfigSaved: '后端配置保存成功',
   saveFailed: '保存失败',
   checking: '检查中...',
+  copySuccess: '复制成功',
 }
 
 export default zh

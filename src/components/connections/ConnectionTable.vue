@@ -147,6 +147,7 @@
                   ? 'sticky -left-2 z-20 bg-inherit shadow-md backdrop-blur-md'
                   : '',
               ]"
+              @contextmenu="handleCellRightClick($event, cell)"
             >
               <template v-if="cell.column.getIsGrouped()">
                 <template v-if="rows[virtualRow.index].getCanExpand()">
@@ -187,6 +188,7 @@
 <script setup lang="ts">
 import { disconnectByIdAPI } from '@/api'
 import { useConnections } from '@/composables/connections'
+import { useNotification } from '@/composables/notification'
 import {
   CONNECTIONS_TABLE_ACCESSOR_KEY,
   PROXY_CHAIN_DIRECTION,
@@ -246,6 +248,7 @@ import { useI18n } from 'vue-i18n'
 import ProxyName from '../proxies/ProxyName.vue'
 
 const { handlerInfo } = useConnections()
+const { showNotification } = useNotification()
 const columnWidthMap = useStorage('config/table-column-width', {
   [CONNECTIONS_TABLE_ACCESSOR_KEY.Close]: 50,
   [CONNECTIONS_TABLE_ACCESSOR_KEY.Host]: 320,
@@ -611,6 +614,43 @@ const handleMouseUp = () => {
     }, 100)
   }
   isMouseDown.value = false
+}
+
+// 复制功能
+const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text)
+    showNotification({
+      content: 'copySuccess',
+      type: 'alert-success',
+      timeout: 2000,
+    })
+  } catch {
+    // 降级处理
+    const textArea = document.createElement('textarea')
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.select()
+    try {
+      document.execCommand('copy')
+      showNotification({
+        content: 'copySuccess',
+        type: 'alert-success',
+        timeout: 2000,
+      })
+    } catch (error) {
+      console.error('复制失败:', error)
+    }
+    document.body.removeChild(textArea)
+  }
+}
+
+const handleCellRightClick = (event: MouseEvent, cell: { getValue: () => unknown }) => {
+  event.preventDefault()
+  const cellValue = cell.getValue()
+  if (cellValue && cellValue !== '-') {
+    copyToClipboard(String(cellValue))
+  }
 }
 </script>
 

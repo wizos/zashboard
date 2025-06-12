@@ -217,6 +217,7 @@ const ru: LANG_MESSAGE = {
   backendConfigSaved: 'Конфигурация бэкенда успешно сохранена',
   saveFailed: 'Не удалось сохранить',
   checking: 'Проверка...',
+  copySuccess: 'Копирование успешно',
 }
 
 export default ru
