@@ -72,6 +72,7 @@
       <div
         v-if="displayContent"
         class="overflow-x-hidden overflow-y-auto overscroll-contain p-2"
+        :class="SCROLLABLE_PARENT_CLASS"
         style="width: calc(100vw - 1rem)"
         ref="cardContentRef"
         @touchmove.stop="preventDefaultForContent"
@@ -94,6 +95,7 @@
 import { useBounceOnVisible } from '@/composables/bouncein'
 import { useRenderProxies } from '@/composables/renderProxies'
 import { isHiddenGroup } from '@/helper'
+import { SCROLLABLE_PARENT_CLASS } from '@/helper/utils'
 import { hiddenGroupMap, proxyGroupLatencyTest, proxyMap } from '@/store/proxies'
 import { blurIntensity, groupProxiesByProvider, manageHiddenGroup } from '@/store/settings'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'

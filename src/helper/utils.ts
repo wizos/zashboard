@@ -52,6 +52,8 @@ export const getMinCardWidth = (size: PROXY_CARD_SIZE) => {
   return size === PROXY_CARD_SIZE.LARGE ? MIN_PROXY_CARD_WIDTH.LARGE : MIN_PROXY_CARD_WIDTH.SMALL
 }
 
+export const SCROLLABLE_PARENT_CLASS = 'scrollable-parent'
+
 export const scrollIntoCenter = (el: HTMLElement) => {
   const scrollableParent = findScrollableParent(el)
 
@@ -75,19 +77,14 @@ export const scrollIntoCenter = (el: HTMLElement) => {
 }
 
 const findScrollableParent = (el: HTMLElement | null): HTMLElement | null => {
-  let parent = el?.parentElement
-  let index = 3
+  const parent = el?.parentElement
 
-  while (parent && index--) {
-    const style = getComputedStyle(parent)
-    const overflowY = style.overflowY
-    const isScrollable = /(auto|scroll|overlay)/.test(overflowY)
-
-    if (isScrollable && parent.scrollHeight > parent.clientHeight) {
-      return parent
-    }
-    parent = parent.parentElement
+  if (
+    parent?.classList.contains(SCROLLABLE_PARENT_CLASS) &&
+    parent.scrollHeight > parent.clientHeight
+  ) {
+    return parent
   }
 
-  return null
+  return parent ? findScrollableParent(parent) : null
 }
