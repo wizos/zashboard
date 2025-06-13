@@ -138,7 +138,7 @@
     }
 
     .pinned-td {
-      @apply bg-transparent! backdrop-blur-md;
+      @apply bg-transparent! backdrop-blur-xl;
     }
 
     .table thead::before,
