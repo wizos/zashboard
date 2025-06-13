@@ -1,5 +1,6 @@
-const BACKGROUND_IMAGE = 'background-image'
-export const LOCAL_IMAGE = 'local-image'
+import { customBackgroundURL } from '@/store/settings'
+import dayjs from 'dayjs'
+import { computed, ref, watch } from 'vue'
 
 const useIndexedDB = (dbKey: string) => {
   const cacheMap = new Map<string, string>()
@@ -95,7 +96,38 @@ const useIndexedDB = (dbKey: string) => {
 }
 
 const backgroundDB = useIndexedDB('base64')
+const backgroundImageKey = 'background-image'
 
-export const saveBase64ToIndexedDB = (val: string) => backgroundDB.put(BACKGROUND_IMAGE, val)
-export const getBase64FromIndexedDB = () => backgroundDB.get(BACKGROUND_IMAGE)
+export const saveBase64ToIndexedDB = (val: string) => backgroundDB.put(backgroundImageKey, val)
+export const getBase64FromIndexedDB = () => backgroundDB.get(backgroundImageKey)
 export const deleteBase64FromIndexedDB = () => backgroundDB.clear()
+export const LOCAL_IMAGE = 'local-image'
+
+const date = dayjs().format('YYYY-MM-DD')
+const backgroundInDB = ref('')
+const getBackgroundInDB = async () => {
+  backgroundInDB.value = (await getBase64FromIndexedDB()) || ''
+}
+
+watch(
+  () => customBackgroundURL.value,
+  () => {
+    if (customBackgroundURL.value.includes(LOCAL_IMAGE)) {
+      getBackgroundInDB()
+    }
+  },
+  {
+    immediate: true,
+  },
+)
+
+export const backgroundImage = computed(() => {
+  if (!customBackgroundURL.value) {
+    return ''
+  }
+
+  if (customBackgroundURL.value.includes(LOCAL_IMAGE)) {
+    return `background-image: url('${backgroundInDB.value}');`
+  }
+  return `background-image: url('${customBackgroundURL.value}?v=${date}');`
+})

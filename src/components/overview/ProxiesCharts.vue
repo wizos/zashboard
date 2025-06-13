@@ -1,11 +1,6 @@
 <template>
   <div
-    :class="
-      twMerge(
-        'relative h-96 w-full overflow-hidden',
-        isFullScreen ? 'bg-base-100 fixed inset-0 z-50 h-screen w-screen' : '',
-      )
-    "
+    :class="twMerge('relative h-96 w-full overflow-hidden')"
     @mousemove.stop
     @touchmove.stop
   >
@@ -33,12 +28,33 @@
       />
     </button>
   </div>
+  <Teleport to="body">
+    <div
+      v-if="isFullScreen"
+      class="bg-base-100 custom-background fixed inset-0 z-[9999] h-screen w-screen bg-cover bg-center"
+      :class="`blur-intensity-${blurIntensity} custom-background-${dashboardTransparent}`"
+      :style="backgroundImage"
+    >
+      <div
+        ref="fullScreenChart"
+        class="bg-base-100 h-full w-full"
+        :style="fullChartStyle"
+      />
+      <button
+        class="btn btn-ghost btn-circle btn-sm fixed right-4 bottom-4 mb-[env(safe-area-inset-bottom)]"
+        @click="isFullScreen = false"
+      >
+        <ArrowsPointingInIcon class="h-4 w-4" />
+      </button>
+    </div>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { isSingBox } from '@/api'
+import { backgroundImage } from '@/helper/indexeddb'
 import { proxyGroupList, proxyMap } from '@/store/proxies'
-import { font, theme } from '@/store/settings'
+import { blurIntensity, dashboardTransparent, font, theme } from '@/store/settings'
 import { activeUuid } from '@/store/setup'
 import { ArrowsPointingInIcon, ArrowsPointingOutIcon } from '@heroicons/vue/24/outline'
 import { useElementSize } from '@vueuse/core'
@@ -48,13 +64,17 @@ import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { debounce } from 'lodash'
 import { twMerge } from 'tailwind-merge'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 echarts.use([TreeChart, GridComponent, LegendComponent, TooltipComponent, CanvasRenderer])
 
 const isFullScreen = ref(false)
 const colorRef = ref()
 const chart = ref()
+const fullScreenChart = ref()
+const fullChartStyle = computed(() => {
+  return `backdrop-filter: blur(${blurIntensity.value}px);`
+})
 const colorSet = {
   baseContent10: '',
   baseContent30: '',
@@ -191,6 +211,12 @@ const options = computed(() => {
         animationThreshold: 99999999999,
         animationDuration: 550,
         animationDurationUpdate: 750,
+        progressive: true,
+        progressiveThreshold: 500,
+        progressiveStep: 100,
+        renderer: 'canvas',
+        silent: false,
+        animationEasing: 'cubicOut',
       },
     ],
   }
@@ -204,17 +230,32 @@ onMounted(() => {
   watch(font, updateFontFamily)
 
   const myChart = echarts.init(chart.value)
+  const fullScreenMyChart = ref<echarts.ECharts>()
 
   myChart.setOption(options.value)
 
   watch([activeUuid, options, isFullScreen], () => {
     myChart?.clear()
     myChart?.setOption(options.value)
+
+    if (isFullScreen.value) {
+      nextTick(() => {
+        if (!fullScreenMyChart.value) {
+          fullScreenMyChart.value = echarts.init(fullScreenChart.value)
+        }
+        fullScreenMyChart.value?.clear()
+        fullScreenMyChart.value?.setOption(options.value)
+      })
+    } else {
+      fullScreenMyChart.value?.dispose()
+      fullScreenMyChart.value = undefined
+    }
   })
 
   const { width } = useElementSize(chart)
   const resize = debounce(() => {
     myChart.resize()
+    fullScreenMyChart.value?.resize()
   }, 100)
 
   watch(width, resize)
