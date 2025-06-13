@@ -132,9 +132,23 @@
     .sidebar,
     .ctrls-bar,
     .nav-bar,
-    .modal-box,
-    .table tbody,
-    .table thead {
+    .modal-box {
+      /* prettier-ignore */
+      backdrop-filter: blur($(i)px);
+    }
+
+    .pinned-td {
+      @apply bg-transparent! backdrop-blur-md;
+    }
+
+    .table thead::before,
+    .table tbody::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       /* prettier-ignore */
       backdrop-filter: blur($(i)px);
     }
