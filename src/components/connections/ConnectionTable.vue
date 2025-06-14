@@ -192,6 +192,7 @@ import { disconnectByIdAPI } from '@/api'
 import { useConnections } from '@/composables/connections'
 import { useNotification } from '@/composables/notification'
 import {
+  CONNECTION_TAB_TYPE,
   CONNECTIONS_TABLE_ACCESSOR_KEY,
   PROXY_CHAIN_DIRECTION,
   TABLE_SIZE,
@@ -207,7 +208,7 @@ import {
 } from '@/helper'
 import { getIPLabelFromMap } from '@/helper/sourceip'
 import { fromNow, prettyBytesHelper } from '@/helper/utils'
-import { renderConnections } from '@/store/connections'
+import { connectionTabShow, renderConnections } from '@/store/connections'
 import {
   connectionTableColumns,
   proxyChainDirection,
@@ -450,7 +451,15 @@ const tanstackTable = useVueTable({
         ...Object.fromEntries(
           Object.values(CONNECTIONS_TABLE_ACCESSOR_KEY).map((key) => [key, false]),
         ),
-        ...Object.fromEntries(connectionTableColumns.value.map((key) => [key, true])),
+        ...Object.fromEntries(
+          connectionTableColumns.value
+            .filter(
+              (key) =>
+                key !== CONNECTIONS_TABLE_ACCESSOR_KEY.Close ||
+                connectionTabShow.value !== CONNECTION_TAB_TYPE.CLOSED,
+            )
+            .map((key) => [key, true]),
+        ),
       }
     },
     get grouping() {
