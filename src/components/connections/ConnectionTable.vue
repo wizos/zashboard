@@ -326,7 +326,11 @@ const columns: ColumnDef<Connection>[] = [
     header: () => t(CONNECTIONS_TABLE_ACCESSOR_KEY.Chains),
     id: CONNECTIONS_TABLE_ACCESSOR_KEY.Chains,
     accessorFn: (original) => {
-      return original.chains
+      const chains = [...original.chains]
+
+      return proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE
+        ? chains.join(' → ')
+        : chains.reverse().join(' → ')
     },
     cell: ({ row }) => {
       const chains: VNode[] = []
@@ -648,17 +652,6 @@ const handleCellRightClick = (
   cell: { column: { id: string }; getValue: () => unknown },
 ) => {
   event.preventDefault()
-
-  if (cell.column.id === CONNECTIONS_TABLE_ACCESSOR_KEY.Chains) {
-    const chains = [...(cell.getValue() as string[])]
-    const chainsString =
-      proxyChainDirection.value === PROXY_CHAIN_DIRECTION.REVERSE
-        ? chains.join(' → ')
-        : chains.reverse().join(' → ')
-
-    copyToClipboard(chainsString)
-    return
-  }
 
   const cellValue = cell.getValue()
 
