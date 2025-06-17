@@ -7,6 +7,7 @@ import { configs, updateConfigs } from '@/store/config'
 import {
   allProxiesLatencyTest,
   fetchProxies,
+  hasSmartGroup,
   proxiesFilter,
   proxiesTabShow,
   proxyGroupList,
@@ -22,6 +23,7 @@ import {
   proxyCardSize,
   proxySortType,
   twoColumnProxyGroup,
+  useSmartGroupSort,
 } from '@/store/settings'
 import {
   ArrowPathIcon,
@@ -254,6 +256,16 @@ export default defineComponent({
                 {t('sortBy')}
                 {sort}
               </div>
+              {hasSmartGroup.value && (
+                <div class="flex items-center gap-2">
+                  {t('useSmartGroupSort')}
+                  <input
+                    class="toggle"
+                    type="checkbox"
+                    v-model={useSmartGroupSort.value}
+                  />
+                </div>
+              )}
               <div class="flex items-center gap-2">
                 {t('groupProxiesByProvider')}
                 <input

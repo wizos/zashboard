@@ -131,7 +131,7 @@
           {{ $t('flushFakeIP') }}
         </button>
         <button
-          v-if="Object.values(proxyMap).some((i) => i.type.toLowerCase() === PROXY_TYPE.Smart)"
+          v-if="hasSmartGroup"
           class="btn btn-sm"
           @click="flushSmartGroupWeightsAPI"
         >
@@ -159,10 +159,9 @@ import {
 import BackendVersion from '@/components/common/BackendVersion.vue'
 import BackendSwitch from '@/components/settings/BackendSwitch.vue'
 import DnsQuery from '@/components/settings/DnsQuery.vue'
-import { PROXY_TYPE } from '@/constant'
 import { handlerUpgradeSuccess } from '@/helper'
 import { configs, fetchConfigs, updateConfigs } from '@/store/config'
-import { fetchProxies, proxyMap } from '@/store/proxies'
+import { fetchProxies, hasSmartGroup } from '@/store/proxies'
 import { fetchRules } from '@/store/rules'
 import { autoUpgradeCore, checkUpgradeCore, displayAllFeatures } from '@/store/settings'
 import { activeBackend } from '@/store/setup'

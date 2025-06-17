@@ -147,6 +147,7 @@ export const iconReflectList = useStorage<
   }[]
 >('config/icon-reflect-list', [])
 export const groupProxiesByProvider = useStorage('config/group-proxies-by-provider', false)
+export const useSmartGroupSort = useStorage('config/use-smart-group-sort', false)
 
 // connections
 export const useConnectionCard = useStorage('config/use-connecticon-card', window.innerWidth < 640)

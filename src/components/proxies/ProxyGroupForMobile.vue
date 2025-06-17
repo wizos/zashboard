@@ -24,7 +24,7 @@
             <div class="text-md truncate">
               {{ proxyGroup.name }}
             </div>
-            <div class="text-base-content/80 flex items-center gap-1 truncate">
+            <div class="text-base-content/80 flex items-center gap-1 truncate text-sm">
               <ProxyGroupNow
                 :name="proxyGroup.name"
                 :mobile="true"

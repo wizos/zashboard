@@ -22,7 +22,7 @@ import type { Proxy, ProxyProvider } from '@/types'
 import { useStorage } from '@vueuse/core'
 import { debounce, last } from 'lodash'
 import pLimit from 'p-limit'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { activeConnections } from './connections'
 import {
   automaticDisconnection,
@@ -319,3 +319,9 @@ export const getNowProxyNodeName = (name: string) => {
 
   return node.name
 }
+
+export const hasSmartGroup = computed(() => {
+  return Object.values(proxyMap.value).some(
+    (proxy) => proxy.type.toLowerCase() === PROXY_TYPE.Smart,
+  )
+})

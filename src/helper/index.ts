@@ -1,20 +1,12 @@
 import { useNotification } from '@/composables/notification'
-import {
-  NOT_CONNECTED,
-  PROXY_CHAIN_DIRECTION,
-  PROXY_SORT_TYPE,
-  PROXY_TYPE,
-  ROUTE_NAME,
-} from '@/constant'
+import { NOT_CONNECTED, PROXY_CHAIN_DIRECTION, PROXY_TYPE, ROUTE_NAME } from '@/constant'
 import { timeSaved } from '@/store/overview'
-import { getLatencyByName, hiddenGroupMap, proxiesFilter, proxyMap } from '@/store/proxies'
+import { hiddenGroupMap, proxyMap } from '@/store/proxies'
 import {
   customThemes,
-  hideUnavailableProxies,
   lowLatency,
   mediumLatency,
   proxyChainDirection,
-  proxySortType,
   splitOverviewPage,
 } from '@/store/settings'
 import type { Connection } from '@/types'
@@ -43,51 +35,6 @@ export const isProxyGroup = (name: string) => {
     PROXY_TYPE.LoadBalance,
     PROXY_TYPE.Selector,
   ].includes(proxyNode.type.toLowerCase() as PROXY_TYPE)
-}
-
-export const sortAndFilterProxyNodes = (proxies: string[], groupName?: string) => {
-  const latencyMap = new Map<string, number>()
-  const getLatencyForSort = (name: string) => {
-    if (isProxyGroup(name)) {
-      return -1
-    }
-    const latency = latencyMap.get(name)!
-
-    return latency === 0 ? Infinity : latency
-  }
-
-  proxies = [...proxies]
-  proxies.forEach((name) => {
-    latencyMap.set(name, getLatencyByName(name, groupName))
-  })
-
-  if (hideUnavailableProxies.value) {
-    proxies = proxies.filter((name) => {
-      return isProxyGroup(name) || latencyMap.get(name)! > 0
-    })
-  }
-
-  if (proxiesFilter.value) {
-    const filters = proxiesFilter.value.split(' ').map((f) => f.toLowerCase().trim())
-
-    proxies = proxies.filter((name) => {
-      name = name.toLowerCase()
-      return filters.every((f) => name.includes(f))
-    })
-  }
-
-  switch (proxySortType.value) {
-    case PROXY_SORT_TYPE.DEFAULT:
-      return proxies
-    case PROXY_SORT_TYPE.NAME_ASC:
-      return proxies.sort((prev, next) => prev.localeCompare(next))
-    case PROXY_SORT_TYPE.NAME_DESC:
-      return proxies.sort((prev, next) => next.localeCompare(prev))
-    case PROXY_SORT_TYPE.LATENCY_ASC:
-      return proxies.sort((prev, next) => getLatencyForSort(prev) - getLatencyForSort(next))
-    case PROXY_SORT_TYPE.LATENCY_DESC:
-      return proxies.sort((prev, next) => getLatencyForSort(next) - getLatencyForSort(prev))
-  }
 }
 
 export const getHostFromConnection = (connection: Connection) => {
