@@ -55,6 +55,7 @@ export default defineComponent({
 
     const logTypeOptions = computed(() => {
       const types: string[] = []
+      const levels: string[] = []
 
       if (isSingBox.value) {
         for (const log of logs.value) {
@@ -65,6 +66,10 @@ export default defineComponent({
           if (!types.includes(type)) {
             types.push(type)
           }
+
+          if (!levels.includes(log.type)) {
+            levels.push(log.type)
+          }
         }
       } else {
         for (const log of logs.value) {
@@ -74,10 +79,21 @@ export default defineComponent({
           if (!types.includes(type)) {
             types.push(type)
           }
+
+          if (!levels.includes(log.type)) {
+            levels.push(log.type)
+          }
         }
       }
 
-      return types.sort()
+      return [
+        ...levels.sort((a, b) => {
+          const aIdx = logLevels.value.indexOf(a as LOG_LEVEL)
+          const bIdx = logLevels.value.indexOf(b as LOG_LEVEL)
+          return aIdx - bIdx
+        }),
+        ...types.sort(),
+      ]
     })
 
     const downloadAllLogs = () => {

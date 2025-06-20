@@ -37,7 +37,10 @@ const renderLogs = computed(() => {
         return false
       }
 
-      if (logTypeFilter.value && !log.payload.includes(logTypeFilter.value)) {
+      if (
+        logTypeFilter.value &&
+        !(log.payload.includes(logTypeFilter.value) || log.type === logTypeFilter.value)
+      ) {
         return false
       }
 
