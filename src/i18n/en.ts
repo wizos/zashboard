@@ -26,6 +26,7 @@ const en = {
   activeConnections: 'Active',
   closedConnections: 'Closed',
   logLevel: 'Log Level',
+  logType: 'Log Type',
   twoColumnProxyGroup: 'Two-Column Proxy Group',
   type: 'Type',
   process: 'Process',

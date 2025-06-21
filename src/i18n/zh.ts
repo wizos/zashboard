@@ -28,6 +28,7 @@ const zh: LANG_MESSAGE = {
   activeConnections: '活跃',
   closedConnections: '已关闭',
   logLevel: '日志等级',
+  logType: '日志类型',
   twoColumnProxyGroup: '双列显示代理组',
   type: '类型',
   process: '进程',

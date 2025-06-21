@@ -28,6 +28,7 @@ const ru: LANG_MESSAGE = {
   activeConnections: 'Активные',
   closedConnections: 'Закрытые',
   logLevel: 'Уровень журнала',
+  logType: 'Тип журнала',
   twoColumnProxyGroup: 'Группа прокси в два столбца',
   type: 'Тип',
   process: 'Процесс',

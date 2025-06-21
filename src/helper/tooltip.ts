@@ -2,6 +2,7 @@ import tippy, { type Instance, type Props } from 'tippy.js'
 
 let appContent: HTMLElement
 let tippyInstance: Instance | null = null
+let currentTarget: HTMLElement | null = null
 
 export const useTooltip = () => {
   if (!appContent) {
@@ -9,6 +10,10 @@ export const useTooltip = () => {
   }
 
   const showTip = (event: Event, content: string | HTMLElement, config: Partial<Props> = {}) => {
+    if (currentTarget === event.currentTarget) {
+      return
+    }
+
     tippyInstance?.destroy()
     tippyInstance = tippy(event.currentTarget as HTMLElement, {
       content,
@@ -20,9 +25,12 @@ export const useTooltip = () => {
       onHidden: () => {
         tippyInstance?.destroy()
         tippyInstance = null
+        currentTarget = null
       },
       ...config,
     })
+
+    currentTarget = event.currentTarget as HTMLElement
   }
 
   const hideTip = () => {

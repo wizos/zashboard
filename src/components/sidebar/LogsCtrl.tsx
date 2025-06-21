@@ -53,7 +53,7 @@ export default defineComponent({
       return [LOG_LEVEL.Debug, LOG_LEVEL.Info, LOG_LEVEL.Warning, LOG_LEVEL.Error, LOG_LEVEL.Silent]
     })
 
-    const logTypeOptions = computed(() => {
+    const logFilterOptions = computed(() => {
       const types: string[] = []
       const levels: string[] = []
 
@@ -86,14 +86,14 @@ export default defineComponent({
         }
       }
 
-      return [
-        ...levels.sort((a, b) => {
+      return {
+        levels: levels.sort((a, b) => {
           const aIdx = logLevels.value.indexOf(a as LOG_LEVEL)
           const bIdx = logLevels.value.indexOf(b as LOG_LEVEL)
           return aIdx - bIdx
         }),
-        ...types.sort(),
-      ]
+        types: types.sort(),
+      }
     })
 
     const downloadAllLogs = () => {
@@ -161,14 +161,26 @@ export default defineComponent({
           v-model={logTypeFilter.value}
         >
           <option value="">{t('all')}</option>
-          {logTypeOptions.value.map((opt) => (
-            <option
-              key={opt}
-              value={opt}
-            >
-              {opt}
-            </option>
-          ))}
+          <optgroup label={t('logLevel')}>
+            {logFilterOptions.value.levels.map((opt) => (
+              <option
+                key={opt}
+                value={opt}
+              >
+                {opt}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label={t('logType')}>
+            {logFilterOptions.value.types.map((opt) => (
+              <option
+                key={opt}
+                value={opt}
+              >
+                {opt}
+              </option>
+            ))}
+          </optgroup>
         </select>
       )
 
